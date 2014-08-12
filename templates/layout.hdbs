@@ -3,7 +3,7 @@
   <h3>{{setting "name"}}</h3>
 </header>
 <section data-main/>
-<footer>
+<footer class="app">
   <a href="mailto:{{author.email}}">
     {{author.name}}
   </a>
