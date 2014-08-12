@@ -1,0 +1,15 @@
+<div class="input-append">
+    <input class="search" type="text" placeholder="Type your search here">
+    <button class="btn" type="button">Search</button>
+</div>
+<div class="filters">
+    <p><strong>About:</strong> {{aboutFilter}} <i class="icon-chevron-down pull-right"></i></p>
+</div>
+<ul class="well well-small results">
+    <li><a href="#">Test item 1</a><i class="icon-thumbs-up pull-right"></i></li>
+    <li><a href="#">Test item 2</a><i class="icon-thumbs-up pull-right"></i></li>
+    <li><a href="#">Test item 3</a><i class="icon-thumbs-up pull-right"></i></li>
+    {{#each resultList}}
+        <li><a href={{this.link}}>{{this.title}}</a><i class="icon-thumbs-up pull-right"></i></li>
+    {{/each}}
+</ul>
