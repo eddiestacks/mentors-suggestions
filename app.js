@@ -2,50 +2,57 @@
 
   return {
     defaultState: 'scaffolding',
-    events: {
-      'app.activated': 'init',
-      'getYahooKeywords.done': 'handleYahooKeywords'
-    },
+
     requests: {
       // ajax requests 
       getYahooKeywords: function(query) {
         return {
-          url: 'http://query.yahooapis.com/v1/yql',
-          type: 'POST',
+          url: 'http://query.yahooapis.com/v1/public/yql',
+          type: 'GET',
           proxy_v2: true,
-          contentType: "json",
-          data: this.toQueryString({
+          data: {
             q: query,
             format: 'json'
-          })
+          }
         }
       }
+    },
+
+    events: {
+      'app.activated': 'init',
+      'getYahooKeywords.done': 'handleYahooKeywords',
+      'getYahooKeywords.fail': 'handleYahooKeywords'
+
     },
 
     init: function() {
       console.log("App has started!!")
       console.log("Making yahoo ajax request")
       var testQuery = "Italian sculptors and painters of the renaissance favored the Virgin Mary for inspiration.";
-      var param = this.createYQLQuery(testQuery);
-      this.ajax('getYahooKeywords', param)
+      this.fetchYahooKeywords(testQuery);
+    },
+
+    fetchYahooKeywords: function(description) {
+      this.ajax('getYahooKeywords', this.createYQLQuery(description));
     },
 
     handleYahooKeywords: function(rsp) {
       //Handle data
-      console.log("handling data:\n" + rsp)
+      console.log("handling data:\n")
+      console.log(rsp)
       var yql_results = "";
-      if (rsp.data) {
-        yql_results = rsp.data;
-        console.log("ajax results: \n" + yql_results);
-      }
+      if (rsp.query.results) {
+        yql_results = rsp.query.results;
+        console.log(yql_results);
+      } 
     },
 
-    createYQLQuery: function(description) {
+    createYQLQuery: function(query) {
       var yql_query_base = "select * from contentanalysis.analyze where text=";
-      var query = yql_query_base + "'" + description + "'";
+      var query = yql_query_base + "'" + query + "'";
       console.log(query)
       return query;
-      // TODO: Join the description on '\n'
+      // TODO: Join the query on '\n'
       // todo: then quote it
       // todo: append to yql_query_base
     },
