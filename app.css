@@ -1,8 +1,18 @@
 .app {
     border-left: 0 !important;
-    border-top: 1px dotted #CCC;
     text-align: right;
     font-size: 0.8em;
+    margin-top: -18px;
+    margin-bottom: -8px;
+}
+
+.app-selector {
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+.app-btn {
+    width: 50%;
 }
 
 input.search {
@@ -11,7 +21,6 @@ input.search {
 
 .filters {
     padding: 6px;
-    margin-bottom: 10px;
 
 }
 
@@ -26,14 +35,16 @@ input.search {
 .results li {
     padding-left: 3px;
     padding-right: 3px;
+    line-height: 1.7;
 }
 
 .results li:hover {
-    background: #e3e3e3;
+    background: #ededed;
 }
 
 .results i {
     position: relative;
-    top: 5px;
+    top: 3px;
     cursor: pointer;
 }
+
