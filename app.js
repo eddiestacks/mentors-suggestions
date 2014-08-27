@@ -1,5 +1,6 @@
 (function() {
 
+  var Lexer = require('lexer.js');
   return {
     defaultState:'scaffolding',
     
@@ -8,6 +9,20 @@
     },
 
     doSomething: function() {
+      this.extractKeywords();
+    },
+
+    extractKeywords: function(){
+      var description = this.ticket().description();
+      var title = this.ticket().subject();
+
+      var exclusions = this.I18n.t('stopwords.exclusions').split(',');
+      var pseudoDescription = Lexer.pseudoPhrase(description,exclusions);
+      var pseudoTitle = Lexer.pseudoPhrase(title,exclusions);
+      console.log("pseudoTitle = ");
+      console.log(pseudoTitle);
+      console.log("pseudoDescription = ");
+      console.log(pseudoDescription);
     },
 
     getKeywords: function() {
