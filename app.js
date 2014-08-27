@@ -13,16 +13,27 @@
     },
 
     extractKeywords: function() {
+      
       var description = this.ticket().description();
       var title = this.ticket().subject();
+
       //todo: add to the list of excluding common words in zendesk domain (e.g. question,help) 
-      var exclusions = this.renderTemplate('stopwords.exclusions').split(',');
-      var pseudoDescription = Lexer.pseudoPhrase(description, exclusions);
-      var pseudoTitle = Lexer.pseudoPhrase(title, exclusions);
+      var exclusions = this.I18n.t('stopwords.exclusions').split(',');
+      
       console.log("pseudoTitle = ");
+      var pseudoTitle = Lexer.pseudoPhrase(title, exclusions);
       console.log(pseudoTitle);
+
       console.log("pseudoDescription = ");
+      var pseudoDescription = Lexer.pseudoPhrase(description, exclusions);
       console.log(pseudoDescription);
+      
+      // combine the title and description to get a list of unique keywords
+      console.log("union of keywords from subject and description: ");
+      var unionKeywords = _.union(pseudoTitle,pseudoDescription);
+      console.log(unionKeywords);
+
+
     },
 
     getKeywords: function() {
@@ -32,7 +43,7 @@
       var words = this.ticket().description().toLowerCase().replace(/[\.,-\/#!$?%\^&\*;:{}=\-_`~()]/g, "").replace(/\s{2,}/g, " ").split(' ');
       var title = this.ticket().subject().toLowerCase().replace(/[\.,-\/#!$?%\^&\*;:{}=\-_`~()]/g, "").replace(/\s{2,}/g, " ").split(' ');
       //words = words.concat(title);
-      var exclusions = this.renderTemplate('stopwords.exclusions').split(',');
+      var exclusions = this.I18n.t('stopwords.exclusions').split(',');
       var keywords = _.difference(words, exclusions);
       title = _.difference(title, exclusions);
       for (var x = 0; x < keywords.length; x++) {
