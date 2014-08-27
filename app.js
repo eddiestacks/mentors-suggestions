@@ -13,16 +13,27 @@
     },
 
     extractKeywords: function() {
+      
       var description = this.ticket().description();
       var title = this.ticket().subject();
+
       //todo: add to the list of excluding common words in zendesk domain (e.g. question,help) 
       var exclusions = this.I18n.t('stopwords.exclusions').split(',');
-      var pseudoDescription = Lexer.pseudoPhrase(description, exclusions);
-      var pseudoTitle = Lexer.pseudoPhrase(title, exclusions);
+      
       console.log("pseudoTitle = ");
+      var pseudoTitle = Lexer.pseudoPhrase(title, exclusions);
       console.log(pseudoTitle);
+
       console.log("pseudoDescription = ");
+      var pseudoDescription = Lexer.pseudoPhrase(description, exclusions);
       console.log(pseudoDescription);
+      
+      // combine the title and description to get a list of unique keywords
+      console.log("union of keywords from subject and description: ");
+      var unionKeywords = _.union(pseudoTitle,pseudoDescription);
+      console.log(unionKeywords);
+
+
     },
 
     getKeywords: function() {
