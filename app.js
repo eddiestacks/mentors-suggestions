@@ -15,7 +15,7 @@
     extractKeywords: function() {
       var description = this.ticket().description();
       var title = this.ticket().subject();
-
+      //todo: add to the list of excluding common words in zendesk domain (e.g. question,help) 
       var exclusions = this.I18n.t('stopwords.exclusions').split(',');
       var pseudoDescription = Lexer.pseudoPhrase(description, exclusions);
       var pseudoTitle = Lexer.pseudoPhrase(title, exclusions);
