@@ -30,7 +30,7 @@
       
       // combine the title and description to get a list of unique keywords
       console.log("union of keywords from subject and description: ");
-      var unionKeywords = _.union(pseudoTitle,pseudoDescription);
+      var unionKeywords = pseudoTitle + pseudoDescription;
       console.log(unionKeywords);
 
 
