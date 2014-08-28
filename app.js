@@ -20,6 +20,7 @@
 
     doSomething: function() {
       this.extractKeywords();
+      var searchwords = this.getKeywords();
       this.ajax('fetchResults', searchwords).done(function(data) {
             for(var resInd = 0; resInd<5; resInd++){
                 if(resInd < data.count){
