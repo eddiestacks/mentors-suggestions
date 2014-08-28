@@ -8,8 +8,28 @@
       'app.activated': 'doSomething'
     },
 
+    requests: {
+        fetchResults: function(searchQuery){
+            var urlWQuery = "/api/v2/search.json?query=" + searchQuery;
+            return {
+                url: urlWQuery,
+                type: 'GET'
+            };
+        }
+    },
+
     doSomething: function() {
       this.extractKeywords();
+      this.ajax('fetchResults', searchwords).done(function(data) {
+            for(var resInd = 0; resInd<5; resInd++){
+                if(resInd < data.count){
+                    this.$('.results').children(":eq(" + resInd + ")").find('a').text(data.results[resInd].subject);
+                    this.$('.results').children(":eq(" + resInd + ")").find('a').attr('href', '/agent/#/tickets/' + data.results[resInd].id);
+                } else {
+                    this.$('.results').children(":eq(" + resInd + ")").remove();
+                }
+            }
+        });
     },
 
     extractKeywords: function() {
