@@ -8,6 +8,15 @@
       'app.activated': 'doSomething'
     },
 
+    requests: {
+      requestDF: function(term) {
+        return {
+          url: helpers.fmt('/api/v2/search.json?per_page=%@&query=%@ type:topic', 1, term),
+          type: 'GET'
+        };
+      }
+    },
+
     doSomething: function() {
       this.extractKeywords();
     },
