@@ -19,7 +19,12 @@
     },
 
     doSomething: function() {
-      this.tfidfPoop();
+      // this.tfidfPoop();
+      var dfPromise = TFIDF.dfPromise("jwt", this);
+      dfPromise.done(function(result) {
+        console.log(result);
+        console.log(result.count);
+      });
       // this.ajax("requestDF", "jwt").done();
     },
     tfidfPoop: function() {
