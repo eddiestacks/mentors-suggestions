@@ -47,6 +47,11 @@
       // Get words array from subject and description
       var words = this.extractKeywords();
       var tfidf = TFIDF.analyze(words, this);
+      tfidf[0].done(
+          function() {
+            console.log(tfidf[1]);
+          }
+        );
     },
 
     extractKeywords: function() {
