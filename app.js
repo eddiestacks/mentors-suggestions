@@ -11,6 +11,13 @@
     },
     /* Requests */
     requests: {
+      fetchResults: function(searchQuery){
+            var urlWQuery = "/api/v2/search.json?query=" + searchQuery;
+            return {
+                url: urlWQuery,
+                type: 'GET'
+            };
+        },
       requestDF: function(term) {
         return {
           url: helpers.fmt('/api/v2/search.json?per_page=%@&query=%@ type:topic', 1, term),
@@ -23,6 +30,7 @@
     doSomething: function() {
       // this.tfidfPoop();
       var searchwords = this.getKeywords();
+      console.log(' searchwords ' , searchwords);
       this.ajax('fetchResults', searchwords).done(function(data) {
             for(var resInd = 0; resInd<5; resInd++){
                 if(resInd < data.count){
