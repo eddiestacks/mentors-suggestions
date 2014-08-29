@@ -20,15 +20,11 @@
 
     doSomething: function() {
       this.tfidfPoop();
-      // this.ajax("requestDF", "jwt").done();
     },
     tfidfPoop: function() {
       // Get words array from subject and description
       var words = this.extractKeywords();
-      console.log(words);
-      // test TF method
-      var termFrequency = TFIDF.tf(words);
-      console.log(termFrequency);
+      var tfidf = TFIDF.analyze(words, this);
     },
 
     extractKeywords: function() {
