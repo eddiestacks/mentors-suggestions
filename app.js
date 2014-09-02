@@ -46,11 +46,10 @@
     tfidfPoop: function() {
       // Get words array from subject and description
       var words = this.extractKeywords();
-      var tfidf = TFIDF.analyze(words, this);
-      var analyzedWords = tfidf[1];
-      tfidf[0].done(
+      var analyzePromise = TFIDF.analyze(words, this);
+      analyzePromise.then(
           function() {
-            console.log(analyzedWords);
+            console.log('top extracted terms: ' , this.extractedTerms);
           }
         );
     },
