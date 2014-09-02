@@ -28,7 +28,9 @@
 
     /* Functions */
     doSomething: function() {
-      this.tfidfPoop();
+      this.tfidfPoop().then(function () {
+        console.log("Search query::", this.extractedTerms.join(" "));
+      });
       var searchwords = this.getKeywords();
       console.log(' searchwords ', searchwords);
       this.ajax('fetchResults', searchwords).done(function(data) {
@@ -48,10 +50,11 @@
       var words = this.extractKeywords();
       var analyzePromise = TFIDF.analyze(words, this);
       analyzePromise.then(
-          function() {
-            console.log('top extracted terms: ' , this.extractedTerms);
-          }
-        );
+        function() {
+          console.log('top extracted terms: ', this.extractedTerms);
+        }
+      );
+      return analyzePromise;
     },
 
     extractKeywords: function() {
