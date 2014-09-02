@@ -28,7 +28,7 @@
 
     /* Functions */
     doSomething: function() {
-      // this.tfidfPoop();
+      this.tfidfPoop();
       var searchwords = this.getKeywords();
       console.log(' searchwords ', searchwords);
       this.ajax('fetchResults', searchwords).done(function(data) {
@@ -47,17 +47,18 @@
       // Get words array from subject and description
       var words = this.extractKeywords();
       var tfidf = TFIDF.analyze(words, this);
+      var analyzedWords = tfidf[1];
       tfidf[0].done(
           function() {
-            console.log(tfidf[1]);
+            console.log(analyzedWords);
           }
         );
     },
 
     extractKeywords: function() {
-
+      // todo: (2) Run the keyword extraction separately on title and description 
       var words = this.ticket().subject() + " " + this.ticket().description();
-      //todo: add to the list of excluding common words in zendesk domain (e.g. question,help) (5)
+      //todo: (5) add to the list of excluding common words in zendesk domain (e.g. question,help) 
       var exclusions = this.I18n.t('stopwords.exclusions').split(',');
 
       return Lexer.pseudoPhrase(words, exclusions);
