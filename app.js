@@ -28,8 +28,9 @@
 
     /* Functions */
     doSomething: function() {
-      this.tfidfPoop().then(function () {
-        console.log("Search query::", this.extractedTerms.join(" "));
+      var analyzePromises = this.tfidfPoop();
+      this.when(analyzePromises[0],analyzePromises[1]).then(function() {
+        // console.log("Search query::", this.extractedTerms.join(" "));
       });
       var searchwords = this.getKeywords();
       console.log(' searchwords ', searchwords);
@@ -47,23 +48,23 @@
 
     tfidfPoop: function() {
       // Get words array from subject and description
-      var words = this.extractKeywords();
-      var analyzePromise = TFIDF.analyze(words, this);
-      analyzePromise.then(
+      var subjectPseudophrases = Lexer.pseudoPhrase(this.ticket().subject(), this);
+      var descriptionPseudophrases = Lexer.pseudoPhrase(this.ticket().description(), this);
+      // Calculate the feature values for terms in both the subject and description
+      var subjectPromise = TFIDF.analyze(subjectPseudophrases, 5, this);
+      // var descriptionPromise = TFIDF.analyze(descriptionPseudophrases, 5, this);
+
+      // When both promises resolve, take the union of the top keywords
+      // todo: (4) Implement checking for an intersection and weight higher
+      this.when(subjectPromise).then(
         function() {
           console.log('top extracted terms: ', this.extractedTerms);
+
+          // console.log("Search query::", this.extractedTerms.join(" "));
+
         }
       );
-      return analyzePromise;
-    },
-
-    extractKeywords: function() {
-      // todo: (2) Run the keyword extraction separately on title and description 
-      var words = this.ticket().subject() + " " + this.ticket().description();
-      //todo: (5) add to the list of excluding common words in zendesk domain (e.g. question,help) 
-      var exclusions = this.I18n.t('stopwords.exclusions').split(',');
-
-      return Lexer.pseudoPhrase(words, exclusions);
+      return [subjectPseudophrases,descriptionPseudophrases];
     },
 
     getKeywords: function() {
