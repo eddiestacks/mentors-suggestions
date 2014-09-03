@@ -28,12 +28,16 @@
 
     /* Functions */
     doSomething: function() {
-      var analyzePromises = this.tfidfPoop();
-      this.when(analyzePromises[0],analyzePromises[1]).then(function() {
-        // console.log("Search query::", this.extractedTerms.join(" "));
+      var analyzePromises = this.analyzeTicket();
+      var that = this;
+      this.when(analyzePromises).then(function() {
+        // console.log('extracted Subject terms: ', that.subjectTerms);
+        // console.log('extracted Description terms: ', that.descriptionTerms);
+        console.log("Search query V2::", that.subjectTerms.join(" ") + " " + that.descriptionTerms.join(" "));
       });
+
       var searchwords = this.getKeywords();
-      console.log(' searchwords ', searchwords);
+      console.log('Search query V1::', searchwords);
       this.ajax('fetchResults', searchwords).done(function(data) {
         for (var resInd = 0; resInd < 5; resInd++) {
           if (resInd < data.count) {
@@ -46,25 +50,16 @@
       });
     },
 
-    tfidfPoop: function() {
+    analyzeTicket: function() {
       // Get words array from subject and description
       var subjectPseudophrases = Lexer.pseudoPhrase(this.ticket().subject(), this);
       var descriptionPseudophrases = Lexer.pseudoPhrase(this.ticket().description(), this);
       // Calculate the feature values for terms in both the subject and description
-      var subjectPromise = TFIDF.analyze(subjectPseudophrases, 5, this);
-      // var descriptionPromise = TFIDF.analyze(descriptionPseudophrases, 5, this);
+      var descriptionPromise = TFIDF.analyzeDescription(descriptionPseudophrases, 5, this);
+      var subjectPromise = TFIDF.analyzeSubject(subjectPseudophrases, 5, this);
 
-      // When both promises resolve, take the union of the top keywords
       // todo: (4) Implement checking for an intersection and weight higher
-      this.when(subjectPromise).then(
-        function() {
-          console.log('top extracted terms: ', this.extractedTerms);
-
-          // console.log("Search query::", this.extractedTerms.join(" "));
-
-        }
-      );
-      return [subjectPseudophrases,descriptionPseudophrases];
+      return this.when(descriptionPromise, subjectPromise);
     },
 
     getKeywords: function() {
