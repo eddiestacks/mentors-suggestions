@@ -1,6 +1,5 @@
 (function() {
 
-  var Lexer = require('lexer.js');
   var TFIDF = require('tfidf.js');
   return {
     defaultState: 'scaffolding',
@@ -28,12 +27,13 @@
 
     /* Functions */
     doSomething: function() {
-      var analyzePromises = this.analyzeTicket();
       var that = this;
+      var analyzePromises = this.analyzeTicket();
       this.when(analyzePromises).then(function() {
         // console.log('extracted Subject terms: ', that.subjectTerms);
         // console.log('extracted Description terms: ', that.descriptionTerms);
-        console.log("Search query V2::", that.subjectTerms.join(" ") + " " + that.descriptionTerms.join(" "));
+        var searchQuery = that.subjectTerms.join(" ") + " " + that.descriptionTerms.join(" ");
+        console.log("Search query V2::", searchQuery);
       });
 
       var searchwords = this.getKeywords();
@@ -52,13 +52,11 @@
 
     analyzeTicket: function() {
       // Get words array from subject and description
-      var subjectPseudophrases = Lexer.pseudoPhrase(this.ticket().subject(), this);
-      var descriptionPseudophrases = Lexer.pseudoPhrase(this.ticket().description(), this);
       // Calculate the feature values for terms in both the subject and description
-      var descriptionPromise = TFIDF.analyzeDescription(descriptionPseudophrases, 5, this);
-      var subjectPromise = TFIDF.analyzeSubject(subjectPseudophrases, 5, this);
+      var descriptionPromise = TFIDF.analyzeDescription(5, this);
+      var subjectPromise = TFIDF.analyzeSubject(5, this);
 
-      // todo: (4) Implement checking for an intersection and weight higher
+      // todo: (4) Implement checking for intersection of terms and weight higher
       return this.when(descriptionPromise, subjectPromise);
     },
 
