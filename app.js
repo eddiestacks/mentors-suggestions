@@ -35,20 +35,31 @@
         // var searchQuery = that.subjectTerms.join(" ") + " " + that.descriptionTerms.join(" ");
         var searchQuery = _.union(that.subjectTerms, that.descriptionTerms);
         console.log("Search query V2::", searchQuery);
+
+        that.ajax('fetchResults', searchQuery).done(function(data) {
+          for (var resInd = 0; resInd < 5; resInd++) {
+            if (resInd < data.count) {
+              this.$('.results').children(":eq(" + resInd + ")").find('a').text(data.results[resInd].subject);
+              this.$('.results').children(":eq(" + resInd + ")").find('a').attr('href', '/agent/#/tickets/' + data.results[resInd].id);
+            } else {
+              this.$('.results').children(":eq(" + resInd + ")").remove();
+            }
+          }
+        });
       });
 
       var searchwords = this.getKeywords();
       console.log('Search query V1::', searchwords);
-      this.ajax('fetchResults', searchwords).done(function(data) {
-        for (var resInd = 0; resInd < 5; resInd++) {
-          if (resInd < data.count) {
-            this.$('.results').children(":eq(" + resInd + ")").find('a').text(data.results[resInd].subject);
-            this.$('.results').children(":eq(" + resInd + ")").find('a').attr('href', '/agent/#/tickets/' + data.results[resInd].id);
-          } else {
-            this.$('.results').children(":eq(" + resInd + ")").remove();
-          }
-        }
-      });
+      // that.ajax('fetchResults', searchQuery).done(function(data) {
+      //   for (var resInd = 0; resInd < 5; resInd++) {
+      //     if (resInd < data.count) {
+      //       this.$('.results').children(":eq(" + resInd + ")").find('a').text(data.results[resInd].subject);
+      //       this.$('.results').children(":eq(" + resInd + ")").find('a').attr('href', '/agent/#/tickets/' + data.results[resInd].id);
+      //     } else {
+      //       this.$('.results').children(":eq(" + resInd + ")").remove();
+      //     }
+      //   }
+      // });
     },
 
     analyzeTicket: function() {
