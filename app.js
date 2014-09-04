@@ -30,9 +30,10 @@
       var that = this;
       var analyzePromises = this.analyzeTicket();
       this.when(analyzePromises).then(function() {
-        // console.log('extracted Subject terms: ', that.subjectTerms);
-        // console.log('extracted Description terms: ', that.descriptionTerms);
-        var searchQuery = that.subjectTerms.join(" ") + " " + that.descriptionTerms.join(" ");
+        console.log('extracted Subject terms: ', that.subjectTerms);
+        console.log('extracted Description terms: ', that.descriptionTerms);
+        // var searchQuery = that.subjectTerms.join(" ") + " " + that.descriptionTerms.join(" ");
+        var searchQuery = _.union(that.subjectTerms, that.descriptionTerms);
         console.log("Search query V2::", searchQuery);
       });
 
