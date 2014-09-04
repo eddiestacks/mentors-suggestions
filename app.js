@@ -54,7 +54,7 @@
     analyzeTicket: function() {
       // Get words array from subject and description
       // Calculate the feature values for terms in both the subject and description
-      var descriptionPromise = TFIDF.analyzeDescription(5, this);
+      var descriptionPromise = TFIDF.analyzeDescription(3, this);
       var subjectPromise = TFIDF.analyzeSubject(5, this);
 
       // todo: (4) Implement checking for intersection of terms and weight higher
