@@ -1,13 +1,20 @@
 (function() {
 
   var TFIDF = require('tfidf.js');
+  var resultList = [];
+  var about = "";
+
   return {
     defaultState: 'scaffolding',
 
     /* Events */
     events: {
-      'app.activated': 'doSomething'
+      'app.activated': 'doSomething',
+      'ticket.custom_field_{{About field ID}}.changed': 'doSomething',
+      'fetchResults.done': 'doneFetching',
+      'fetchResultsAgain.done': 'doneFetchingAgain'
     },
+
     /* Requests */
     requests: {
       fetchResults: function(searchQuery) {
@@ -16,6 +23,13 @@
           url: urlWQuery,
           type: 'GET'
         };
+      },
+      fetchResultsAgain: function(searchQuery){
+        var urlWQuery = "/api/v2/search.json?query=" + searchQuery;
+          return {
+            url: urlWQuery,
+            type: 'GET'
+          };
       },
       requestDF: function(term) {
         return {
@@ -36,18 +50,54 @@
         console.log("Search query V2::", searchQuery);
       });
 
-      var searchwords = this.getKeywords();
+      var aboutID = 'custom_field_' + this.setting('About field ID');
+      this.about = this.ticket().customField(aboutID);
+      var keywords = this.getKeywords();
+      var searchwords = keywords + "%20type:ticket%20fieldvalue:" + this.about;
+      searchwords = searchwords.replace(/%20fieldvalue:null/g, "");
       console.log('Search query V1::', searchwords);
-      this.ajax('fetchResults', searchwords).done(function(data) {
-        for (var resInd = 0; resInd < 5; resInd++) {
-          if (resInd < data.count) {
-            this.$('.results').children(":eq(" + resInd + ")").find('a').text(data.results[resInd].subject);
-            this.$('.results').children(":eq(" + resInd + ")").find('a').attr('href', '/agent/#/tickets/' + data.results[resInd].id);
-          } else {
-            this.$('.results').children(":eq(" + resInd + ")").remove();
-          }
+      if(this.about == null){
+            this.about = 'None selected';
+      }
+      this.ajax('fetchResults', searchwords);
+    },
+
+    doneFetching: function(data) {
+        this.resultList = [];
+        var resCount = 0;
+        for (var resInd = 0; resCount<5 && resInd<data.count; resInd++) {
+            if (this.ticket().id() != data.results[resInd].id) {
+                var tempLink = '/agent/#/tickets/' + data.results[resInd].id;
+                var temp = {'title': data.results[resInd].subject, 'link': tempLink};
+                this.resultList.push(temp);
+                resCount++;
+            }
         }
-      });
+        if (this.resultList.length == 0){
+            var query = this.getKeywords() + "%20type:ticket";
+            this.about += ': no results with this filter';
+            this.resultList = this.ajax('fetchResultsAgain', query);
+        } else {
+            this.switchTo('scaffolding', {resultList:this.resultList, aboutFilter:this.about});
+        }
+    },
+
+    doneFetchingAgain: function(data) {
+        this.resultList = [];
+        var resCount = 0;
+        for (var resInd = 0; resCount<5 && resInd<data.count; resInd++) {
+            if (this.ticket().id() != data.results[resInd].id) {
+                var tempLink = '/agent/#/tickets/' + data.results[resInd].id;
+                var temp = {'title': data.results[resInd].subject, 'link': tempLink};
+                this.resultList.push(temp);
+                resCount++;
+            }
+        }
+        if (this.resultList.length == 0){
+            this.resultList.push({'title':'No relevant tickets found', 'link': '/agent/#/tickets/' + this.ticket().id()});
+        }
+        this.switchTo('scaffolding', {resultList:this.resultList, aboutFilter:this.about});
+        return this.resultList;
     },
 
     analyzeTicket: function() {
@@ -61,8 +111,8 @@
     },
 
     getKeywords: function() {
-      var words = this.ticket().description().toLowerCase().replace(/[\.,-\/#!$?%\^&\*;:{}=\-_`~()]/g, "").replace(/\s{2,}/g, " ").split(' ');
-      var title = this.ticket().subject().toLowerCase().replace(/[\.,-\/#!$?%\^&\*;:{}=\-_`~()]/g, "").replace(/\s{2,}/g, " ").split(' ');
+      var words = this.ticket().description().toLowerCase().replace(/[\.,-\/#!$?%\^&\*;:{}=\-_`~()]/g, "").replace(/[0-9]/g,"").replace(/\s{2,}/g, " ").split(' ');
+      var title = this.ticket().subject().toLowerCase().replace(/[\.,-\/#!$?%\^&\*;:{}=\-_`~()]/g, "").replace(/[0-9]/g,"").replace(/\s{2,}/g, " ").split(' ');
       var exclusions = this.I18n.t('stopwords.exclusions').split(',');
       words = _.difference(words, exclusions);
       title = _.difference(title, exclusions);
@@ -111,6 +161,7 @@
       };
       return this.sortByCount(keysAndCounts);
     },
+    
     /* 
      * returns a sorted array of words by the number of times each word occurrs
      * Param: kAC => keys and counts object returned from countOccurrances()
