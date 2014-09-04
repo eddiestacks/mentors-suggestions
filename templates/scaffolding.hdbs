@@ -11,6 +11,6 @@
 </div>
 <ul class="well well-small results">
     {{#each resultList}}
-        <li><a href={{this.link}}>{{this.title}}</a></li>
+        <li class="truncate"><a href={{this.link}}>{{this.title}}</a></li>
     {{/each}}
 </ul>

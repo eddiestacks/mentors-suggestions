@@ -48,3 +48,9 @@ input.search {
     cursor: pointer;
 }
 
+.truncate {
+    width: 290px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
