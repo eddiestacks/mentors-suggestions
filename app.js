@@ -46,7 +46,7 @@
       this.when(analyzePromises).then(function() {
         // console.log('extracted Subject terms: ', that.subjectTerms);
         // console.log('extracted Description terms: ', that.descriptionTerms);
-        var searchQuery = that.subjectTerms.join(" ") + " " + that.descriptionTerms.join(" ");
+        var searchQuery = _.union(that.subjectTerms, that.descriptionTerms);
         console.log("Search query V2::", searchQuery);
       });
 
@@ -103,7 +103,7 @@
     analyzeTicket: function() {
       // Get words array from subject and description
       // Calculate the feature values for terms in both the subject and description
-      var descriptionPromise = TFIDF.analyzeDescription(5, this);
+      var descriptionPromise = TFIDF.analyzeDescription(3, this);
       var subjectPromise = TFIDF.analyzeSubject(5, this);
 
       // todo: (4) Implement checking for intersection of terms and weight higher
