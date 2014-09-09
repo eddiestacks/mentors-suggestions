@@ -21,7 +21,24 @@ input.search {
 
 .filters {
     padding: 6px;
+}
 
+.filter-list {
+    width: 90%;
+    display: inline-block;
+    color: #888;
+    font-style: italic;
+}
+
+.filter-list strong {
+    color: #000;
+    font-style: normal;
+}
+
+.filter-options {
+    width: 10%;
+    float: right;
+    text-align: right;
 }
 
 .results {
