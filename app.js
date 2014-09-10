@@ -3,19 +3,16 @@
   var TFIDF = require('tfidf.js');
   var resultList = [];
   var about = "";
-  var algoVersion = 1;
 
   return {
-    defaultState: 'loading',
+    defaultState: 'scaffolding',
 
     /* Events */
     events: {
       'app.activated': 'doSomething',
       'ticket.custom_field_{{About field ID}}.changed': 'doSomething',
       'fetchResults.done': 'doneFetching',
-      'fetchResultsAgain.done': 'doneFetchingAgain',
-      'click .btn-v1': 'switchToV1', 
-      'click .btn-v2': 'switchToV2'
+      'fetchResultsAgain.done': 'doneFetchingAgain'
     },
 
     /* Requests */
@@ -42,52 +39,27 @@
       }
     },
 
-    switchToV1: function() {
-      this.algoVersion = 1;
-      if(this.$('.btn-v2').hasClass('active')){
-        this.$('.btn-v2').removeClass('active');
-        this.$('.btn-v1').addClass('active');
-        this.switchTo('loading');
-        this.doSomething();
-      }
-    },
-
-    switchToV2: function() {
-      this.algoVersion = 2;
-      if(this.$('.btn-v1').hasClass('active')){
-        this.$('.btn-v1').removeClass('active');
-        this.$('.btn-v2').addClass('active');
-        this.switchTo('loading');
-        this.doSomething();
-      }
-    },
-
     /* Functions */
     doSomething: function() {
       var that = this;
       var analyzePromises = this.analyzeTicket();
-      var searchQuery = '';
-      var aboutID = 'custom_field_' + this.setting('About field ID');
-      this.about = this.ticket().customField(aboutID);
-      if(this.algoVersion == 2){
       this.when(analyzePromises).then(function() {
         // console.log('extracted Subject terms: ', that.subjectTerms);
         // console.log('extracted Description terms: ', that.descriptionTerms);
-        searchQuery = that.subjectTerms.join("%20") + "%20" + that.descriptionTerms.join("%20");
+        var searchQuery = _.union(that.subjectTerms, that.descriptionTerms);
         console.log("Search query V2::", searchQuery);
       });
-      } else {
-        searchQuery = this.getKeywords();
-        console.log('Search query V1::', searchQuery);
-      }
 
-      searchQuery += "%20type:ticket%20fieldvalue:" + this.about;
-      searchQuery = searchQuery.replace(/%20fieldvalue:null/g, "");
-      
+      var aboutID = 'custom_field_' + this.setting('About field ID');
+      this.about = this.ticket().customField(aboutID);
+      var keywords = this.getKeywords();
+      var searchwords = keywords + "%20type:ticket%20fieldvalue:" + this.about;
+      searchwords = searchwords.replace(/%20fieldvalue:null/g, "");
+      console.log('Search query V1::', searchwords);
       if(this.about == null){
             this.about = 'None selected';
       }
-      this.ajax('fetchResults', searchQuery);
+      this.ajax('fetchResults', searchwords);
     },
 
     doneFetching: function(data) {
