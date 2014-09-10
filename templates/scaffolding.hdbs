@@ -1,8 +1,13 @@
 <div class="btn-group app-selector" data-toggle="buttons-radio">
+<<<<<<< HEAD
   <button type="button" class="btn active app-btn ticket-suggestions">Ticket Suggestions</button>
   <button type="button" class="btn app-btn answer-suggestions">Answer Suggestions</button>
+=======
+  <button type="button" class="btn active app-btn ticket-suggestions btn-v1">Algorithm V1</button>
+  <button type="button" class="btn app-btn answer-suggestions btn-v2">Algorithm V2</button>
+>>>>>>> Joe's-other-branch
 </div>
-<div class="ticket-suggestions-app hide">
+<div class="ticket-suggestions-app">
     <div class="input-append">
         <input class="search" type="text" placeholder="Type your search here">
         <button class="btn" type="button">Search</button>
@@ -17,7 +22,7 @@
         {{/each}}
     </ul>
 </div>
-<div class="answer-suggestions-app">
+<div class="answer-suggestions-app hide">
     {{#if entries}}
         <div class="well well-small">
           <p>{{t "help_text"}}</p>

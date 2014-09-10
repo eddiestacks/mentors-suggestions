@@ -9,7 +9,7 @@
 
     /* Events */
     events: {
-      'app.activated': 'doSomething',
+      'app.activated': 'init',
       'ticket.custom_field_{{About field ID}}.changed': 'doSomething',
       'fetchResults.done': 'doneFetching',
       'fetchResultsAgain.done': 'doneFetchingAgain'
@@ -39,6 +39,34 @@
       }
     },
 
+<<<<<<< HEAD
+=======
+    switchToV1: function() {
+      this.algoVersion = 1;
+      if(this.$('.btn-v2').hasClass('active')){
+        this.$('.btn-v2').toggleClass('active');
+        this.$('.btn-v1').toggleClass('active');
+        this.switchTo('loading');
+        this.doSomething();
+      }
+    },
+
+    switchToV2: function() {
+      this.algoVersion = 2;
+      if(this.$('.btn-v1').hasClass('active')){
+        this.$('.btn-v1').toggleClass('active');
+        this.$('.btn-v2').toggleClass('active');
+        this.switchTo('loading');
+        this.doSomething();
+      }
+    },
+
+    init: function() {
+      this.$('.btn-v1').addClass('active');
+      this.doSomething();
+    },
+
+>>>>>>> Joe's-other-branch
     /* Functions */
     doSomething: function() {
       var that = this;
