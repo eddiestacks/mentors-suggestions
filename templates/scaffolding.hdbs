@@ -1,5 +1,5 @@
 <div class="btn-group app-selector" data-toggle="buttons-radio">
-  <button type="button" class="btn active app-btn ticket-suggestions btn-v1">Algorithm V1</button>
+  <button type="button" class="btn app-btn ticket-suggestions btn-v1">Algorithm V1</button>
   <button type="button" class="btn app-btn answer-suggestions btn-v2">Algorithm V2</button>
 </div>
 <div class="ticket-suggestions-app">
