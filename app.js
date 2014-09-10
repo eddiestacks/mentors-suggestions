@@ -43,7 +43,7 @@
     },
 
     switchToV1: function() {
-      this.algoVersion = 1;
+      algoVersion = 1;
       if(this.$('.btn-v2').hasClass('active')){
         this.$('.btn-v2').toggleClass('active');
         this.$('.btn-v1').toggleClass('active');
@@ -53,17 +53,16 @@
     },
 
     switchToV2: function() {
-      this.algoVersion = 2;
+      algoVersion = 2;
       if(this.$('.btn-v1').hasClass('active')){
-        this.$('.btn-v1').toggleClass('active');
-        this.$('.btn-v2').toggleClass('active');
+        //this.$('.btn-v1').toggleClass('active');
+        //this.$('.btn-v2').toggleClass('active');
         this.switchTo('loading');
         this.doSomething();
       }
     },
 
     init: function() {
-      this.$('.btn-v1').addClass('active');
       this.doSomething();
     },
 
@@ -74,7 +73,7 @@
       var searchQuery = '';
       var aboutID = 'custom_field_' + this.setting('About field ID');
       this.about = this.ticket().customField(aboutID);
-      if(this.algoVersion == 2){
+      if(algoVersion == 2){
         var analyzePromises = this.analyzeTicket();
         this.when(analyzePromises).then(function() {
         // console.log('extracted Subject terms: ', that.subjectTerms);
@@ -91,7 +90,7 @@
       searchQuery = searchQuery.replace(/%20fieldvalue:null/g, "");
       
       if(this.about == null){
-            this.about = 'None selected';
+        this.about = 'None selected';
       }
       this.ajax('fetchResults', searchQuery);
     },
@@ -111,9 +110,16 @@
             var query = this.getKeywords() + "%20type:ticket";
             this.about += ': no results with this filter';
             this.resultList = this.ajax('fetchResultsAgain', query);
-        } else {
-            this.switchTo('scaffolding', {resultList:this.resultList, aboutFilter:this.about});
         }
+        
+        this.switchTo('scaffolding', {resultList:this.resultList, aboutFilter:this.about});
+        
+        if (algoVersion == 1) {
+          this.$('.btn-v1').addClass('active');
+        } else {
+          this.$('.btn-v2').addClass('active');
+        }
+        
     },
 
     doneFetchingAgain: function(data) {
@@ -130,7 +136,7 @@
         if (this.resultList.length == 0){
             this.resultList.push({'title':'No relevant tickets found', 'link': '/agent/#/tickets/' + this.ticket().id()});
         }
-        this.switchTo('scaffolding', {resultList:this.resultList, aboutFilter:this.about});
+        //this.switchTo('scaffolding', {resultList:this.resultList, aboutFilter:this.about});
         return this.resultList;
     },
 
