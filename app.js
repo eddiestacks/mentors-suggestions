@@ -45,8 +45,6 @@
     switchToV1: function() {
       algoVersion = 1;
       if(this.$('.btn-v2').hasClass('active')){
-        this.$('.btn-v2').toggleClass('active');
-        this.$('.btn-v1').toggleClass('active');
         this.switchTo('loading');
         this.doSomething();
       }
@@ -55,8 +53,6 @@
     switchToV2: function() {
       algoVersion = 2;
       if(this.$('.btn-v1').hasClass('active')){
-        //this.$('.btn-v1').toggleClass('active');
-        //this.$('.btn-v2').toggleClass('active');
         this.switchTo('loading');
         this.doSomething();
       }
