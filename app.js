@@ -15,7 +15,8 @@
       'fetchResults.done': 'doneFetching',
       'fetchResultsAgain.done': 'doneFetchingAgain',
       'click .btn-v1': 'switchToV1',
-      'click .btn-v2': 'switchToV2'
+      'click .btn-v2': 'switchToV2',
+      'click .btn-search': 'manualSearch'
     },
 
     /* Requests */
@@ -246,7 +247,26 @@
         }
       }
       return temp;
-    }
+    },
+
+    manualSearch: function(){
+            var manualSearchTermsArray = [];
+            var finalManualSearchTermsArray = [];
+            var manualSearchTerms = this.$('input.manualSearch').val();
+            manualSearchTermsArray = manualSearchTerms.split(" ");
+
+            for (var i=0; i<manualSearchTermsArray.length; i++){
+              finalManualSearchTermsArray += manualSearchTermsArray[i];
+              finalManualSearchTermsArray += "%20";
+            }
+
+            finalManualSearchTermsArray = finalManualSearchTermsArray.substring(0,finalManualSearchTermsArray.length - 3);
+
+            console.log(finalManualSearchTermsArray);
+            var searchQuery = finalManualSearchTermsArray;
+            this.ajax('fetchResults', searchQuery);
+
+          }
 
   };
 

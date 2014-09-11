@@ -4,8 +4,8 @@
 </div>
 <div class="ticket-suggestions-app">
     <div class="input-append">
-        <input class="search" type="text" placeholder="Type your search here">
-        <button class="btn" type="button">Search</button>
+        <input class="search manualSearch" type="text" placeholder="Type your search here">
+        <button class="btn btn-search" type="button">Search</button>
     </div>
     <div class="filters">
         <div class="filter-list"><strong>About:</strong> {{aboutFilter}}</div>
