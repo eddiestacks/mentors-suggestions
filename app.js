@@ -1,6 +1,7 @@
 (function() {
 
   var TFIDF = require('tfidf.js');
+  var Stemmer = require('stemmer.js');
   var resultList = [];
   var about = "";
   var algoVersion = 1;
@@ -59,6 +60,8 @@
     },
 
     init: function() {
+      var stemmed = Stemmer.stem("consistency");
+      console.log('stemmed ' , stemmed);
       this.doSomething();
     },
 
