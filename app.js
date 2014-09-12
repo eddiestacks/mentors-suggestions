@@ -75,9 +75,7 @@
       if(algoVersion == 2){
         var analyzePromises = this.analyzeTicket();
         this.when(analyzePromises).then(function() {
-        // console.log('extracted Subject terms: ', that.subjectTerms);
-        // console.log('extracted Description terms: ', that.descriptionTerms);
-        searchQuery = that.subjectTerms.join("%20") + "%20" + that.descriptionTerms.join("%20");
+        searchQuery = _.union(that.subjectTerms,that.descriptionTerms).join(" ");
         console.log("Search query V2::", searchQuery);
       });
       } else {
