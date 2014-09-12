@@ -1,6 +1,7 @@
 (function() {
 
   var TFIDF = require('tfidf.js');
+  var Stemmer = require('stemmer.js');
   var resultList = [];
   var about = "";
   var algoVersion = 1;
@@ -60,6 +61,8 @@
     },
 
     init: function() {
+      var stemmed = Stemmer.stem("consistency");
+      console.log('stemmed ' , stemmed);
       this.doSomething();
     },
 
@@ -73,9 +76,7 @@
       if(algoVersion == 2){
         var analyzePromises = this.analyzeTicket();
         this.when(analyzePromises).then(function() {
-        // console.log('extracted Subject terms: ', that.subjectTerms);
-        // console.log('extracted Description terms: ', that.descriptionTerms);
-        searchQuery = that.subjectTerms.join("%20") + "%20" + that.descriptionTerms.join("%20");
+        searchQuery = _.union(that.subjectTerms,that.descriptionTerms).join(" ");
         console.log("Search query V2::", searchQuery);
       });
       } else {
