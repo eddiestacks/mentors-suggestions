@@ -61,8 +61,6 @@
     },
 
     init: function() {
-      var stemmed = Stemmer.stem("consistency");
-      console.log('stemmed ' , stemmed);
       this.doSomething();
     },
 
