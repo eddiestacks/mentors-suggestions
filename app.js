@@ -12,11 +12,11 @@
     /* Events */
     events: {
       'app.activated': 'init',
-      'ticket.custom_field_{{About field ID}}.changed': 'doSomething',
+      'ticket.custom_field_{{About field ID}}.changed': 'init',
       'fetchResults.done': 'doneFetching',
       'fetchResultsAgain.done': 'doneFetchingAgain',
-      'click .btn-v1': 'switchToV1',
-      'click .btn-v2': 'switchToV2',
+      'click .btn-tix': 'switchToTix',
+      'click .btn-answer': 'switchToAnswer',
       'click .btn-search': 'manualSearch'
     },
 
@@ -29,12 +29,12 @@
           type: 'GET'
         };
       },
-      fetchResultsAgain: function(searchQuery){
+      fetchResultsAgain: function(searchQuery) {
         var urlWQuery = "/api/v2/search.json?query=" + searchQuery;
-          return {
-            url: urlWQuery,
-            type: 'GET'
-          };
+        return {
+          url: urlWQuery,
+          type: 'GET'
+        };
       },
       requestDF: function(term) {
         return {
@@ -44,93 +44,116 @@
       }
     },
 
-    switchToV1: function() {
-      algoVersion = 1;
-      if(this.$('.btn-v2').hasClass('active')){
+    switchToTix: function() {
+      if (this.$('.btn-tix').hasClass('active')) {
         this.switchTo('loading');
-        this.doSomething();
+        this.init();
       }
+
     },
 
-    switchToV2: function() {
-      algoVersion = 2;
-      if(this.$('.btn-v1').hasClass('active')){
+    switchToAnswer: function() {
+      if (this.$('.btn-answer').hasClass('active')) {
         this.switchTo('loading');
-        this.doSomething();
+        console.log("Switch to Answer Suggestion App");
       }
     },
 
     init: function() {
-      this.doSomething();
-    },
-
-    /* Functions */
-    doSomething: function() {
-      var that = this;
-      //var analyzePromises = this.analyzeTicket();
+      // Reset searchQuery variable, and get About Field ID
       var searchQuery = '';
       var aboutID = 'custom_field_' + this.setting('About field ID');
+      var aboutFieldValue;
+
+      // Get current About Field value
       this.about = this.ticket().customField(aboutID);
-      if(algoVersion == 2){
-        searchQuery = TFIDF.analyzeTicket(5,this);
-        console.log("Search query V3::", searchQuery);
+
+      // Call algorithm to analyze keywords and return 5 results
+      searchQuery = TFIDF.analyzeTicket(5, this);
+
+      // Log what the query is using for search
+      console.log("Search query is using: ", searchQuery);
+
+      // Convert searchQuery to a string so we can append type:ticket and fieldvalue:
+      if (this.about === null) {
+        searchQuery = searchQuery.join(" ") + " type:ticket";
+        aboutFieldValue = this.about;
+
       } else {
-        searchQuery = this.getKeywords();
-        console.log('Search query V1::', searchQuery);
+        searchQuery = searchQuery.join(" ") + " type:ticket fieldvalue:" + this.about;
       }
 
-      searchQuery += "%20type:ticket%20fieldvalue:" + this.about;
-      searchQuery = searchQuery.replace(/%20fieldvalue:null/g, "");
-      
-      if(this.about == null){
+      searchQuery = searchQuery.join(" ") + " type:ticket " + (this.about) ? "fieldvalue:" + this.about : "";
+
+      if (this.about == null) {
         this.about = 'None selected';
       }
       this.ajax('fetchResults', searchQuery);
     },
 
+
+
+
+
+
+
+
+
     doneFetching: function(data) {
-        this.resultList = [];
-        var resCount = 0;
-        for (var resInd = 0; resCount<5 && resInd<data.count; resInd++) {
-            if (this.ticket().id() != data.results[resInd].id) {
-                var tempLink = '/agent/#/tickets/' + data.results[resInd].id;
-                var temp = {'title': data.results[resInd].subject, 'link': tempLink};
-                this.resultList.push(temp);
-                resCount++;
-            }
+      this.resultList = [];
+      var resCount = 0;
+      for (var resInd = 0; resCount < 5 && resInd < data.count; resInd++) {
+        if (this.ticket().id() != data.results[resInd].id) {
+          var tempLink = '/agent/#/tickets/' + data.results[resInd].id;
+          var temp = {
+            'title': data.results[resInd].subject,
+            'link': tempLink
+          };
+          this.resultList.push(temp);
+          resCount++;
         }
-        if (this.resultList.length == 0){
-            var query = this.getKeywords() + "%20type:ticket";
-            this.about += ': no results with this filter';
-            this.resultList = this.ajax('fetchResultsAgain', query);
-        }
-        
-        this.switchTo('scaffolding', {resultList:this.resultList, aboutFilter:this.about});
-        
-        if (algoVersion == 1) {
-          this.$('.btn-v1').addClass('active');
-        } else {
-          this.$('.btn-v2').addClass('active');
-        }
-        
+      }
+      if (this.resultList.length == 0) {
+        var query = this.getKeywords() + "%20type:ticket";
+        this.about += ': no results with this filter';
+        this.resultList = this.ajax('fetchResultsAgain', query);
+      }
+
+      this.switchTo('scaffolding', {
+        resultList: this.resultList,
+        aboutFilter: this.aboutFieldValue
+      });
+
+      if (algoVersion == 1) {
+        this.$('.btn-tix').addClass('active');
+      } else {
+        this.$('.btn-answer').addClass('active');
+      }
+
     },
 
     doneFetchingAgain: function(data) {
-        this.resultList = [];
-        var resCount = 0;
-        for (var resInd = 0; resCount<5 && resInd<data.count; resInd++) {
-            if (this.ticket().id() != data.results[resInd].id) {
-                var tempLink = '/agent/#/tickets/' + data.results[resInd].id;
-                var temp = {'title': data.results[resInd].subject, 'link': tempLink};
-                this.resultList.push(temp);
-                resCount++;
-            }
+      this.resultList = [];
+      var resCount = 0;
+      for (var resInd = 0; resCount < 5 && resInd < data.count; resInd++) {
+        if (this.ticket().id() != data.results[resInd].id) {
+          var tempLink = '/agent/#/tickets/' + data.results[resInd].id;
+          var temp = {
+            'title': data.results[resInd].subject,
+            'link': tempLink
+          };
+          this.resultList.push(temp);
+          resCount++;
         }
-        if (this.resultList.length == 0){
-            this.resultList.push({'title':'No relevant tickets found', 'link': '/agent/#/tickets/' + this.ticket().id()});
-        }
-        //this.switchTo('scaffolding', {resultList:this.resultList, aboutFilter:this.about});
-        return this.resultList;
+      }
+      if (this.resultList.length == 0) {
+        this.resultList.push({
+          'title': 'No relevant tickets found',
+          'link': '/agent/#/tickets/' + this.ticket().id()
+        });
+      }
+      //this.switchTo('scaffolding', {resultList:this.resultList, aboutFilter:this.about});
+      return this.resultList;
     },
 
     analyzeTicket: function() {
@@ -143,8 +166,8 @@
     },
 
     getKeywords: function() {
-      var words = this.ticket().description().toLowerCase().replace(/[\.,-\/#!$?%\^&\*;:{}=\-_`~()]/g, "").replace(/[0-9]/g,"").replace(/\s{2,}/g, " ").split(' ');
-      var title = this.ticket().subject().toLowerCase().replace(/[\.,-\/#!$?%\^&\*;:{}=\-_`~()]/g, "").replace(/[0-9]/g,"").replace(/\s{2,}/g, " ").split(' ');
+      var words = this.ticket().description().toLowerCase().replace(/[\.,-\/#!$?%\^&\*;:{}=\-_`~()]/g, "").replace(/[0-9]/g, "").replace(/\s{2,}/g, " ").split(' ');
+      var title = this.ticket().subject().toLowerCase().replace(/[\.,-\/#!$?%\^&\*;:{}=\-_`~()]/g, "").replace(/[0-9]/g, "").replace(/\s{2,}/g, " ").split(' ');
       var exclusions = this.I18n.t('stopwords.exclusions').split(',');
       words = _.difference(words, exclusions);
       title = _.difference(title, exclusions);
@@ -193,7 +216,7 @@
       };
       return this.sortByCount(keysAndCounts);
     },
-    
+
     /* 
      * returns a sorted array of words by the number of times each word occurrs
      * Param: kAC => keys and counts object returned from countOccurrances()
@@ -244,24 +267,24 @@
       return temp;
     },
 
-    manualSearch: function(){
-            var manualSearchTermsArray = [];
-            var finalManualSearchTermsArray = [];
-            var manualSearchTerms = this.$('input.manualSearch').val();
-            manualSearchTermsArray = manualSearchTerms.split(" ");
+    manualSearch: function() {
+      var manualSearchTermsArray = [];
+      var finalManualSearchTermsArray = [];
+      var manualSearchTerms = this.$('input.manualSearch').val();
+      manualSearchTermsArray = manualSearchTerms.split(" ");
 
-            for (var i=0; i<manualSearchTermsArray.length; i++){
-              finalManualSearchTermsArray += manualSearchTermsArray[i];
-              finalManualSearchTermsArray += "%20";
-            }
+      for (var i = 0; i < manualSearchTermsArray.length; i++) {
+        finalManualSearchTermsArray += manualSearchTermsArray[i];
+        finalManualSearchTermsArray += "%20";
+      }
 
-            finalManualSearchTermsArray = finalManualSearchTermsArray.substring(0,finalManualSearchTermsArray.length - 3);
+      finalManualSearchTermsArray = finalManualSearchTermsArray.substring(0, finalManualSearchTermsArray.length - 3);
 
-            console.log(finalManualSearchTermsArray);
-            var searchQuery = finalManualSearchTermsArray;
-            this.ajax('fetchResults', searchQuery);
+      console.log(finalManualSearchTermsArray);
+      var searchQuery = finalManualSearchTermsArray;
+      this.ajax('fetchResults', searchQuery);
 
-          }
+    }
 
   };
 
