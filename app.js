@@ -72,8 +72,8 @@
       var aboutID = 'custom_field_' + this.setting('About field ID');
       this.about = this.ticket().customField(aboutID);
       if(algoVersion == 2){
-        searchQuery = this.analyzeTicket();
-        console.log("Search query V2::", searchQuery);
+        searchQuery = TFIDF.analyzeTicket(5,this);
+        console.log("Search query V3::", searchQuery);
       } else {
         searchQuery = this.getKeywords();
         console.log('Search query V1::', searchQuery);
@@ -139,7 +139,6 @@
       var descriptionKeywords = TFIDF.analyzeDescription(3, this);
       var subjectKeywords = TFIDF.analyzeSubject(5, this);
 
-      // todo: (4) Implement checking for intersection of terms and weight higher
       return _.union(descriptionKeywords, subjectKeywords).join(" ");
     },
 
