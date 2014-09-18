@@ -72,11 +72,8 @@
       var aboutID = 'custom_field_' + this.setting('About field ID');
       this.about = this.ticket().customField(aboutID);
       if(algoVersion == 2){
-        var analyzePromises = this.analyzeTicket();
-        this.when(analyzePromises).then(function() {
-        searchQuery = _.union(that.subjectTerms,that.descriptionTerms).join(" ");
+        searchQuery = this.analyzeTicket();
         console.log("Search query V2::", searchQuery);
-      });
       } else {
         searchQuery = this.getKeywords();
         console.log('Search query V1::', searchQuery);
@@ -139,11 +136,11 @@
     analyzeTicket: function() {
       // Get words array from subject and description
       // Calculate the feature values for terms in both the subject and description
-      var descriptionPromise = TFIDF.analyzeDescription(3, this);
-      var subjectPromise = TFIDF.analyzeSubject(5, this);
+      var descriptionKeywords = TFIDF.analyzeDescription(3, this);
+      var subjectKeywords = TFIDF.analyzeSubject(5, this);
 
       // todo: (4) Implement checking for intersection of terms and weight higher
-      return this.when(descriptionPromise, subjectPromise);
+      return _.union(descriptionKeywords, subjectKeywords).join(" ");
     },
 
     getKeywords: function() {
