@@ -24,9 +24,10 @@
           url: urlWQuery,
           type: 'GET'
         };
-      },
+      }
+    },
 
-      init: function() {
+    init: function() {
       // Reset searchQuery variable, and get About Field ID
       var searchQuery = '';
       var aboutID = 'custom_field_' + this.setting('About field ID');
@@ -40,9 +41,9 @@
 
       // Log what the query is using for search
       console.log("Search query is using: ", searchQuery);
-      
+
       // Convert searchQuery to a string so we can append type:ticket and fieldvalue:
-      if(this.about === null) {
+      if (this.about === null) {
         searchQuery = searchQuery.join(" ") + " type:ticket";
         aboutFieldValue = this.about;
 
@@ -50,13 +51,14 @@
         searchQuery = searchQuery.join(" ") + " type:ticket fieldvalue:" + this.about;
       }
 
-      searchQuery = searchQuery.join(" ") + " type:ticket " + (this.about) ? "fieldvalue:" + this.about : "" ;
-      
-      if(this.about == null){
+      searchQuery = searchQuery.join(" ") + " type:ticket " + (this.about) ? "fieldvalue:" + this.about : "";
+
+      if (this.about == null) {
         this.about = 'None selected';
       }
       this.ajax('fetchResults', searchQuery);
-    },
+    }
 
 
+  }
 }());
