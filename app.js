@@ -1,7 +1,7 @@
 (function() {
 
   var TFIDF = require('tfidf.js');
-  var Stemmer = require('stemmer.js');
+  var Lexer = require('lexer.js');
   var resultList = [];
   var about = "";
   var algoVersion = 1;
@@ -69,21 +69,13 @@
       this.about = this.ticket().customField(aboutID);
 
       // Call algorithm to analyze keywords and return 5 results
-      searchQuery = TFIDF.analyzeTicket(5, this);
+      keywords = Lexer.extractKeywords(5, this);
 
       // Log what the query is using for search
-      console.log("Search query is using: ", searchQuery);
+      console.log("Search query is using: ", keywords);
 
       // Convert searchQuery to a string so we can append type:ticket and fieldvalue:
-      if (this.about === null) {
-        searchQuery = searchQuery.join(" ") + " type:ticket";
-        aboutFieldValue = this.about;
-
-      } else {
-        searchQuery = searchQuery.join(" ") + " type:ticket fieldvalue:" + this.about;
-      }
-
-      searchQuery = searchQuery.join(" ") + " type:ticket " + (this.about) ? "fieldvalue:" + this.about : "";
+      searchQuery = keywords.join(" ") + " type:ticket " + (this.about ? "fieldvalue:" + this.about : "");
 
       if (this.about == null) {
         this.about = 'None selected';
