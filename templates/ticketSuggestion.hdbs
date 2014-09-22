@@ -1,6 +1,6 @@
 <div class="btn-group app-selector" data-toggle="buttons-radio">
-  <button type="button" class="btn app-btn ticket-suggestions btn-tix">Algorithm V1</button>
-  <button type="button" class="btn app-btn answer-suggestions btn-answer">Algorithm V3</button>
+  <button type="button" class="btn app-btn btn-ticketSuggestions active">Ticket Suggestions</button>
+  <button type="button" class="btn app-btn btn-answerSuggestions">Answer Suggestions</button>
 </div>
 <div class="ticket-suggestions-app">
     <div class="input-append">
@@ -12,9 +12,10 @@
         <div class="filter-options"><i class="icon-chevron-down options-toggle"></i></div>
     </div>
     <ul class="well well-small results">
-        {{#each resultList}}
-            <li class="truncate"><a href={{this.link}}>{{this.title}}</a></li>
-        {{/each}}
+      <p class="no-results">There were no results from the current search.</p>
+      {{#each resultList}}
+          <li class="truncate"><a href={{this.link}}>{{this.title}}</a></li>
+      {{/each}}
     </ul>
 </div>
 <div class="answer-suggestions-app hide">

@@ -1,5 +1,5 @@
 {
-  "name": "Mentor's Solutions App",
+  "name": "Mentors Solutions App",
   "author": {
     "name": "SoS Apps",
     "email": "epritchard@zendesk.com",
@@ -12,7 +12,7 @@
   "frameworkVersion": "1.0",
   "parameters": [
     {
-      "name": "About field ID",
+      "name": "About Field ID",
       "type": "number"
     }
   ]
