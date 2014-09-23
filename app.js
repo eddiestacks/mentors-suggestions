@@ -15,7 +15,7 @@
     events: {
       'app.activated' : 'init',
       'ticket.subject.changed' : _.debounce(function(){ this.init(); }, 500), // Rerun the search if the subject changes
-      'ticket.custom_field_{{About field ID}}.changed' : _.debounce(function(){ this.init(); }, 500), // Rerun the search if the About field changes
+      'ticket.custom_field_{{About Field ID}}.changed' : _.debounce(function(){ this.init(); }, 500), // Rerun the search if the About field changes
       'runSearch.done' : 'displayResults',
       'runSearch.fail' : 'displayError',
       'click .btn-ticketSuggestion' : function() { this.$('.btn-ticketSuggestion').toggle('.active'); init();},
