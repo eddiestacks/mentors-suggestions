@@ -39,11 +39,9 @@
       // Get the ID for the About Field, store its contents, and declare necessary variables
       this.aboutFieldID = 'custom_field_' + this.setting('About Field ID');
       this.aboutFieldContents = this.ticket().customField(this.aboutFieldID);
-      var keywords = '',
-          searchQuery = '';
 
       // Call algorithm to analyze keywords and return 5 results
-      keywords = Lexer.extractKeywords(5, this);
+      var keywords = Lexer.extractKeywords(5, this);
 
       // Search for tickets in the current about field with the extracted keywords
       this.ajax('runTicketSearch', keywords.join(' '), this.aboutFieldContents);
