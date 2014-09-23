@@ -43,7 +43,7 @@
       keywords = Lexer.extractKeywords(5, this);
 
       // Define the search query, and if About Field is empty, leave it out of the search.
-      searchQuery = keywords.join(' ') + ' type:ticket ' + (!_.isEmpty(this.aboutFieldContents) ? 'fieldvalue: ' + this.aboutFieldContents : '');
+      searchQuery = keywords.join(' ') + ' type:ticket ' + (!_.isEmpty(this.aboutFieldContents) ? 'fieldvalue:' + this.aboutFieldContents : '');
 
       // Log out the search query for debugging purposes
       console.log('Search query: ' + searchQuery);
