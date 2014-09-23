@@ -26,7 +26,7 @@
     requests: {
       runSearch: function(searchQuery) {
         return {
-          URL: helpers.fmt('/api/v2/search.json?query=%@', searchQuery),
+          url: helpers.fmt('/api/v2/search.json?query=%@', searchQuery),
           type: 'GET'
         };
       }
