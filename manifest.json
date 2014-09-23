@@ -12,7 +12,7 @@
   "frameworkVersion": "1.0",
   "parameters": [
     {
-      "name": "About field ID",
+      "name": "About Field ID",
       "type": "number"
     }
   ]

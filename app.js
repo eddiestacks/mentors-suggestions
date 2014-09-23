@@ -1,171 +1,91 @@
 (function() {
 
   var Lexer = require('lexer.js');
-  var resultList = [];
-  var about = "";
-  var algoVersion = 1;
 
   return {
+
+    // SET GLOBALS
+    aboutFieldID: '',
+
+    // SET APP DEFAULTS
     defaultState: 'loading',
+    defaultNumberOfEntriesToDisplay: 5,
 
-    /* Events */
+    // APP EVENTS
     events: {
-      'app.activated': 'init',
-      'ticket.custom_field_{{About field ID}}.changed': 'init',
-      'fetchResults.done': 'doneFetching',
-      'fetchResultsAgain.done': 'doneFetchingAgain',
-      'click .btn-tix': 'switchToTix',
-      'click .btn-answer': 'switchToAnswer',
-      'click .btn-search': 'manualSearch'
+      'app.activated' : 'init',
+      'ticket.subject.changed' : _.debounce(function(){ this.init(); }, 500), // Rerun the search if the subject changes
+      'ticket.custom_field_{{About Field ID}}.changed' : _.debounce(function(){ this.init(); }, 500), // Rerun the search if the About field changes
+      'runTicketSearch.done' : 'displayResults',
+      'runTicketSearch.fail' : 'displayError',
+      'click .btn-search': 'manualSearch',
+      'click .btn-ticketSuggestion' : function() { this.$('.btn-ticketSuggestion').toggle('.active'); init();},
+      'click .btn-answerSuggestion' : function() { this.$('.btn-answerSuggestion').toggle('.active');}
+
     },
 
-    /* Requests */
     requests: {
-      fetchResults: function(searchQuery) {
-        var urlWQuery = "/api/v2/search.json?query=" + searchQuery;
+      runTicketSearch: function(query, aboutField) {
+        // if About Field is empty, leave it out of the search.
+        var searchQuery = query + ' type:ticket ' + (!_.isEmpty(aboutField) ? 'fieldvalue:' + this.aboutFieldContents : '')
+        console.log('searchQuery ' , searchQuery);
         return {
-          url: urlWQuery,
-          type: 'GET'
-        };
-      },
-      fetchResultsAgain: function(searchQuery) {
-        var urlWQuery = "/api/v2/search.json?query=" + searchQuery;
-        return {
-          url: urlWQuery,
-          type: 'GET'
-        };
-      },
-      requestDF: function(term) {
-        return {
-          url: helpers.fmt('/api/v2/search.json?per_page=%@&query=%@ type:topic', 1, term),
+          url: helpers.fmt('/api/v2/search.json?query=%@', searchQuery),
           type: 'GET'
         };
       }
     },
-
-    switchToTix: function() {
-      if (this.$('.btn-tix').hasClass('active')) {
-        this.switchTo('loading');
-        this.init();
-      }
-
-    },
-
-    switchToAnswer: function() {
-      if (this.$('.btn-answer').hasClass('active')) {
-        this.switchTo('loading');
-        console.log("Switch to Answer Suggestion App");
-      }
-    },
-
+  
     init: function() {
-      // Reset searchQuery variable, and get About Field ID
-      var searchQuery = '';
-      var aboutID = 'custom_field_' + this.setting('About field ID');
-      var aboutFieldValue;
-
-      // Get current About Field value
-      this.about = this.ticket().customField(aboutID);
+      // Get the ID for the About Field, store its contents, and declare necessary variables
+      this.aboutFieldID = 'custom_field_' + this.setting('About Field ID');
+      this.aboutFieldContents = this.ticket().customField(this.aboutFieldID);
 
       // Call algorithm to analyze keywords and return 5 results
-      keywords = Lexer.extractKeywords(5, this);
+      var keywords = Lexer.extractKeywords(5, this);
 
-      // Log what the query is using for search
-      console.log("Search query is using: ", keywords);
-
-      // Convert searchQuery to a string so we can append type:ticket and fieldvalue:
-      searchQuery = keywords.join(" ") + " type:ticket " + (this.about ? "fieldvalue:" + this.about : "");
-
-      if (this.about == null) {
-        this.about = 'None selected';
-      }
-      this.ajax('fetchResults', searchQuery);
+      // Search for tickets in the current about field with the extracted keywords
+      this.ajax('runTicketSearch', keywords.join(' '), this.aboutFieldContents);
     },
 
+    displayResults: function(data) {
+      var resultList = [],
+          resCount = data.count,
+          resTicketID,
+          resTicketSubject;
 
+      // Loop through results and prep them for display
+      for (var resultIndex = 0; resultIndex < this.defaultNumberOfEntriesToDisplay && resultIndex < resCount; resultIndex++) {
 
+        // Set result Ticket ID to resTicketID, and result Ticket Subject to resTicketSubject
+        resTicketID = data.results[resultIndex].id;
+        resTicketSubject = data.results[resultIndex].subject;
 
-
-
-
-
-
-    doneFetching: function(data) {
-      this.resultList = [];
-      var resCount = 0;
-      for (var resInd = 0; resCount < 5 && resInd < data.count; resInd++) {
-        if (this.ticket().id() != data.results[resInd].id) {
-          var tempLink = '/agent/#/tickets/' + data.results[resInd].id;
-          var temp = {
-            'title': data.results[resInd].subject,
-            'link': tempLink
-          };
-          this.resultList.push(temp);
-          resCount++;
+        // Test if result is not current ticket being viewed, and if not, add it to resultList array
+        if ( this.ticket().id() != data.results[resultIndex].id) {
+          resultList.push({'title':resTicketSubject, 'link': '/agent/#/tickets/' + resTicketID});
         }
       }
-      if (this.resultList.length == 0) {
-        var query = this.getKeywords() + "%20type:ticket";
-        this.about += ': no results with this filter';
-        this.resultList = this.ajax('fetchResultsAgain', query);
-      }
 
-      this.switchTo('scaffolding', {
-        resultList: this.resultList,
-        aboutFilter: this.aboutFieldValue
-      });
-
-      if (algoVersion == 1) {
-        this.$('.btn-tix').addClass('active');
+      this.switchTo('ticketSuggestion', {resultList: resultList, aboutFilter: this.aboutFieldContents});
+      // If zero results were returned, display message
+      if (resultList.length === 0) {
+        this.$('.no-results').show();
       } else {
-        this.$('.btn-answer').addClass('active');
+        this.$('.no-results').hide();
       }
-
-    },
-
-    doneFetchingAgain: function(data) {
-      this.resultList = [];
-      var resCount = 0;
-      for (var resInd = 0; resCount < 5 && resInd < data.count; resInd++) {
-        if (this.ticket().id() != data.results[resInd].id) {
-          var tempLink = '/agent/#/tickets/' + data.results[resInd].id;
-          var temp = {
-            'title': data.results[resInd].subject,
-            'link': tempLink
-          };
-          this.resultList.push(temp);
-          resCount++;
-        }
-      }
-      if (this.resultList.length == 0) {
-        this.resultList.push({
-          'title': 'No relevant tickets found',
-          'link': '/agent/#/tickets/' + this.ticket().id()
-        });
-      }
-      //this.switchTo('scaffolding', {resultList:this.resultList, aboutFilter:this.about});
-      return this.resultList;
     },
 
     manualSearch: function() {
-      var manualSearchTermsArray = [];
-      var finalManualSearchTermsArray = [];
-      var manualSearchTerms = this.$('input.manualSearch').val();
-      manualSearchTermsArray = manualSearchTerms.split(" ");
+      var manualSearchQuery = this.$('input.manualSearch').val().trim();
+      this.ajax('runTicketSearch', manualSearchQuery, this.aboutFieldContents);
+    },
 
-      for (var i = 0; i < manualSearchTermsArray.length; i++) {
-        finalManualSearchTermsArray += manualSearchTermsArray[i];
-        finalManualSearchTermsArray += "%20";
-      }
-
-      finalManualSearchTermsArray = finalManualSearchTermsArray.substring(0, finalManualSearchTermsArray.length - 3);
-
-      console.log(finalManualSearchTermsArray);
-      var searchQuery = finalManualSearchTermsArray;
-      this.ajax('fetchResults', searchQuery);
-
+    displayError: function(data) {
+      console.log("there was an error");
+      console.log(data);
     }
 
-  };
 
+  };
 }());
