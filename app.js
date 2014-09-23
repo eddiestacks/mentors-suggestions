@@ -18,6 +18,7 @@
       'ticket.custom_field_{{About Field ID}}.changed' : _.debounce(function(){ this.init(); }, 500), // Rerun the search if the About field changes
       'runTicketSearch.done' : 'displayResults',
       'runTicketSearch.fail' : 'displayError',
+      'click .btn-search': 'manualSearch',
       'click .btn-ticketSuggestion' : function() { this.$('.btn-ticketSuggestion').toggle('.active'); init();},
       'click .btn-answerSuggestion' : function() { this.$('.btn-answerSuggestion').toggle('.active');}
 
@@ -75,6 +76,9 @@
       }
     },
 
+    manualSearch: function() {
+      var manualSearchQuery = this.$('input.manualSearch').val().trim();
+      this.ajax('runTicketSearch', manualSearchQuery, this.aboutFieldContents);
     },
 
     displayError: function(data) {
