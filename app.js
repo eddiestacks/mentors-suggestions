@@ -16,15 +16,18 @@
       'app.activated' : 'init',
       'ticket.subject.changed' : _.debounce(function(){ this.init(); }, 500), // Rerun the search if the subject changes
       'ticket.custom_field_{{About Field ID}}.changed' : _.debounce(function(){ this.init(); }, 500), // Rerun the search if the About field changes
-      'runSearch.done' : 'displayResults',
-      'runSearch.fail' : 'displayError',
+      'runTicketSearch.done' : 'displayResults',
+      'runTicketSearch.fail' : 'displayError',
       'click .btn-ticketSuggestion' : function() { this.$('.btn-ticketSuggestion').toggle('.active'); init();},
       'click .btn-answerSuggestion' : function() { this.$('.btn-answerSuggestion').toggle('.active');}
 
     },
 
     requests: {
-      runSearch: function(searchQuery) {
+      runTicketSearch: function(query, aboutField) {
+        // if About Field is empty, leave it out of the search.
+        var searchQuery = query + ' type:ticket ' + (!_.isEmpty(aboutField) ? 'fieldvalue:' + this.aboutFieldContents : '')
+        console.log('searchQuery ' , searchQuery);
         return {
           url: helpers.fmt('/api/v2/search.json?query=%@', searchQuery),
           type: 'GET'
@@ -42,13 +45,8 @@
       // Call algorithm to analyze keywords and return 5 results
       keywords = Lexer.extractKeywords(5, this);
 
-      // Define the search query, and if About Field is empty, leave it out of the search.
-      searchQuery = keywords.join(' ') + ' type:ticket ' + (!_.isEmpty(this.aboutFieldContents) ? 'fieldvalue:' + this.aboutFieldContents : '');
-
-      // Log out the search query for debugging purposes
-      console.log('Search query: ' + searchQuery);
-
-      this.ajax('runSearch', searchQuery);
+      // Search for tickets in the current about field with the extracted keywords
+      this.ajax('runTicketSearch', keywords.join(' '), this.aboutFieldContents);
     },
 
     displayResults: function(data) {
