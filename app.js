@@ -1,6 +1,6 @@
 (function() {
 
-  var TFIDF = require('lexer.js');
+  var Lexer = require('lexer.js');
 
   return {
 
@@ -40,7 +40,7 @@
           searchQuery = '';
 
       // Call algorithm to analyze keywords and return 5 results
-      keywords = TFIDF.extractKeywords(5, this);
+      keywords = Lexer.extractKeywords(5, this);
 
       // Define the search query, and if About Field is empty, leave it out of the search.
       searchQuery = keywords.join(' ') + ' type:ticket ' + (!_.isEmpty(this.aboutFieldContents) ? 'fieldvalue: ' + this.aboutFieldContents : '');
