@@ -66,7 +66,7 @@
 
         // Test if result is not current ticket being viewed, and if not, add it to resultList array
         if ( this.ticket().id() != data.results[resultIndex].id) {
-          this.resultList.push({'title':resTicketSubject, 'link': '/agent/#/tickets/' + resTicketID});
+          resultList.push({'title':resTicketSubject, 'link': '/agent/#/tickets/' + resTicketID});
         }
       }
 
@@ -77,7 +77,7 @@
         this.$('.no-results').hide();
       }
 
-      this.switchTo('ticketSuggestion', {resultList: this.resultList, aboutFilter: this.aboutFieldContents});
+      this.switchTo('ticketSuggestion', {resultList: resultList, aboutFilter: this.aboutFieldContents});
     },
 
     displayError: function(data) {
