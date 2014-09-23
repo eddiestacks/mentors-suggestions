@@ -71,3 +71,7 @@ input.search {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.no-results {
+    display: none;
+}

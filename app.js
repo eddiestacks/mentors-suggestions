@@ -70,14 +70,15 @@
         }
       }
 
+      this.switchTo('ticketSuggestion', {resultList: resultList, aboutFilter: this.aboutFieldContents});
       // If zero results were returned, display message
       if (resultList.length === 0) {
         this.$('.no-results').show();
       } else {
         this.$('.no-results').hide();
       }
+    },
 
-      this.switchTo('ticketSuggestion', {resultList: resultList, aboutFilter: this.aboutFieldContents});
     },
 
     displayError: function(data) {
