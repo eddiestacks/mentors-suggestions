@@ -12,7 +12,7 @@
         <div class="filter-options"><i class="icon-chevron-down options-toggle"></i></div>
     </div>
     <ul class="well well-small results">
-      <p class="no-results">There were no results from the current search.</p>
+      <p class="no-results hide">There were no results from the current search.</p>
       {{#each resultList}}
           <li class="truncate"><a href={{this.link}}>{{this.title}}</a></li>
       {{/each}}
