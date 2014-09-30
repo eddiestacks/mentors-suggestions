@@ -20,15 +20,19 @@
       'runTicketSearch.fail' : 'displayError',
       'click .btn-search' : 'manualSearch',
       'click .btn-ticketSuggestions' : function(){
-        this.$('.btn-ticketSuggestions').toggleClass('active');
-        this.$('.btn-answerSuggestions').toggleClass('active');
-        this.switchTo(this.defaultState);
-        this.init();
+        if (this.$('.btn-ticketSuggestions').hasClass('active') !== true) {
+          this.$('.btn-ticketSuggestions').toggleClass('active');
+          this.$('.btn-answerSuggestions').toggleClass('active');
+          this.switchTo(this.defaultState);
+          this.init();
+        }
       },
       'click .btn-answerSuggestions' : function(){
-        this.$('.btn-ticketSuggestions').toggleClass('active');
-        this.$('.btn-answerSuggestions').toggleClass('active');
-        this.switchTo(this.defaultState);
+        if (this.$('.btn-answerSuggestions').hasClass('active') !== true) {
+          this.$('.btn-ticketSuggestions').toggleClass('active');
+          this.$('.btn-answerSuggestions').toggleClass('active');
+          this.switchTo(this.defaultState);
+        }
       }
 
     },
