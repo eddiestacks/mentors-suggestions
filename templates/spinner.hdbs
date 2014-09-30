@@ -1,0 +1,2 @@
+<span class='spinner'></span>
+<p class='spinner_text'>{{t "spinner"}}</p>

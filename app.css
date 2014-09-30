@@ -75,3 +75,55 @@ input.search {
 .no-results {
     display: none;
 }
+
+ul {
+  padding-top: 5px;
+  margin-left: 0.5em;
+}
+
+.input-append input {
+  width: 74%;
+}
+
+span.spinner {
+  background-image: app-asset-url("spinner.gif");
+  background-size: 30px 30px;
+  background-repeat: no-repeat;
+  width: 30px;
+  height: 30px;
+  display: block;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+p.spinner_text {
+  text-align: center;
+  font-size: 0.8em;
+  margin-bottom: 1.5em;
+  font-size: italic;
+}
+
+.label-warning {
+  font-size: 10px;
+  padding: 0px 2px 0px 3px;
+}
+
+.row-fluid [class*="span"] {
+  min-height: 20px;
+}
+
+.entries {
+  padding-top: 10px;
+}
+.entry-text {
+  padding-left: 0.3em;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space:nowrap;
+  padding-left:none;
+}
+
+section div.well.well-small {
+  margin-bottom: 0px;
+}
