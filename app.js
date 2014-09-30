@@ -18,16 +18,25 @@
       'ticket.custom_field_{{About Field ID}}.changed' : _.debounce(function(){ this.init(); }, 500), // Rerun the search if the About field changes
       'runTicketSearch.done' : 'displayResults',
       'runTicketSearch.fail' : 'displayError',
-      'click .btn-search': 'manualSearch',
-      'click .btn-ticketSuggestion' : function() { this.$('.btn-ticketSuggestion').toggle('.active'); init();},
-      'click .btn-answerSuggestion' : function() { this.$('.btn-answerSuggestion').toggle('.active');}
+      'click .btn-search' : 'manualSearch',
+      'click .btn-ticketSuggestions' : function(){ 
+        this.$('.btn-ticketSuggestions').toggleClass('active');
+        this.$('.btn-answerSuggestions').toggleClass('active');
+        this.$('.answer-suggestions-app').toggleClass('hide');
+        this.init();
+      },
+      'click .btn-answerSuggestions' : function(){
+        this.$('.btn-ticketSuggestions').toggleClass('active');
+        this.$('.btn-answerSuggestions').toggleClass('active');
+        this.$('.answer-suggestions-app').toggleClass('hide');
+      }
 
     },
 
     requests: {
       runTicketSearch: function(query, aboutField) {
         // if About Field is empty, leave it out of the search.
-        var searchQuery = query + ' type:ticket ' + (!_.isEmpty(aboutField) ? 'fieldvalue:' + this.aboutFieldContents : '')
+        var searchQuery = query + ' type:ticket ' + (!_.isEmpty(aboutField) ? 'fieldvalue:' + this.aboutFieldContents : '');
         console.log('searchQuery ' , searchQuery);
         return {
           url: helpers.fmt('/api/v2/search.json?query=%@', searchQuery),
