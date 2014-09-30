@@ -75,3 +75,36 @@ input.search {
 .no-results {
     display: none;
 }
+
+ul {
+  padding-top: 5px;
+  margin-left: 0.5em;
+}
+
+.input-append input {
+  width: 74%;
+}
+
+.label-warning {
+  font-size: 10px;
+  padding: 0px 2px 0px 3px;
+}
+
+.row-fluid [class*="span"] {
+  min-height: 20px;
+}
+
+.entries {
+  padding-top: 10px;
+}
+.entry-text {
+  padding-left: 0.3em;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space:nowrap;
+  padding-left:none;
+}
+
+section div.well.well-small {
+  margin-bottom: 0px;
+}
