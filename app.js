@@ -19,16 +19,16 @@
       'runTicketSearch.done' : 'displayResults',
       'runTicketSearch.fail' : 'displayError',
       'click .btn-search' : 'manualSearch',
-      'click .btn-ticketSuggestions' : function(){ 
+      'click .btn-ticketSuggestions' : function(){
         this.$('.btn-ticketSuggestions').toggleClass('active');
         this.$('.btn-answerSuggestions').toggleClass('active');
-        this.$('.answer-suggestions-app').toggleClass('hide');
+        this.switchTo(this.defaultState);
         this.init();
       },
       'click .btn-answerSuggestions' : function(){
         this.$('.btn-ticketSuggestions').toggleClass('active');
         this.$('.btn-answerSuggestions').toggleClass('active');
-        this.$('.answer-suggestions-app').toggleClass('hide');
+        this.switchTo(this.defaultState);
       }
 
     },
@@ -86,8 +86,8 @@
     },
 
     manualSearch: function() {
-      var manualSearchQuery = this.$('input.manualSearch').val().trim();
-      this.ajax('runTicketSearch', manualSearchQuery, this.aboutFieldContents);
+      this.manualSearchQuery = this.$('input.manualSearch').val().trim();
+      this.ajax('runTicketSearch', this.manualSearchQuery, this.aboutFieldContents);
     },
 
     displayError: function(data) {

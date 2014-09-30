@@ -1,3 +1,7 @@
+<div class="btn-group app-selector" data-toggle="buttons-radio">
+  <button type="button" class="btn app-btn btn-ticketSuggestions active">Ticket Suggestions</button>
+  <button type="button" class="btn app-btn btn-answerSuggestions">Answer Suggestions</button>
+</div>
 <section data-main/>
 <footer class="app">
   <a href="mailto:{{author.email}}">
