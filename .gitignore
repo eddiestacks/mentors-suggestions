@@ -1,0 +1,4 @@
+*.zip
+**/.zat
+**/tmp
+**/.idea

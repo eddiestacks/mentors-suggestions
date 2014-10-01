@@ -1,0 +1,13 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal">×</button>
+  <h3>{{title}}</h3>
+</div>
+
+<div class="modal-body">
+  <div class="content-body">{{spinner "dotted"}}</div>
+</div>
+
+<div class="modal-footer">
+  <button class="btn" data-dismiss="modal">{{t "modal.close"}}</button>
+  <a href="{{link}}" title="{{title}}" class="btn btn-primary copy_link" data-dismiss="modal">{{t "modal.copy"}}</a>
+</div>

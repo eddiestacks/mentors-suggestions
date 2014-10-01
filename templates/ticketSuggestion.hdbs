@@ -1,0 +1,14 @@
+<div class="ticket-suggestions-app">
+    <div class="filters">
+        <div class="filter-list"><strong>About:</strong> {{aboutFilter}}</div>
+        <div class="filter-options"><i class="icon-chevron-down options-toggle"></i></div>
+    </div>
+    <div class="well well-small results">
+      <p class="no-results">There were no results from the current search.</p>
+      <ul class="results">
+      {{#each resultList}}
+          <li class="truncate"><a href={{this.link}}>{{this.title}}</a></li>
+      {{/each}}
+      </ul>
+    </div>
+</div>

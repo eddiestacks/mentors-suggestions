@@ -1,10 +1,20 @@
 <header>
   <span class="logo"/>
-  <h3>{{setting "name"}}</h3>
+  <h3>
+    <a class="toggle-app"><i class="icon-minus"></i> {{setting "name"}}</a>
+  </h3>
 </header>
-<section data-main/>
-<footer>
-  <a href="mailto:{{author.email}}">
-    {{author.name}}
-  </a>
-</footer>
+
+<div class="app-container">
+  <div class="btn-group app-selector" data-toggle="buttons-radio">
+    <button type="button" class="btn app-btn btn-ticketSuggestions active">Ticket Suggestions</button>
+    <button type="button" class="btn app-btn btn-answerSuggestions">Answer Suggestions</button>
+  </div>
+  
+  <div class="input-append custom-search">
+    <input type="text" class="search manualSearch" placeholder="{{t "layout.placeholder_text"}}">
+    <button class="btn btn-search" type="button">{{t "layout.search_button"}}</button>
+  </div>
+  
+  <section data-main/>
+</div>

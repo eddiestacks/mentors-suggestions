@@ -1,0 +1,110 @@
+.app {
+    border-left: 0 !important;
+    text-align: right;
+    font-size: 0.8em;
+    margin-top: -18px;
+    margin-bottom: -8px;
+}
+
+.app-selector {
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+.app-btn {
+    width: 50%;
+}
+
+input.search {
+    width: 76%;
+}
+
+.filters {
+    padding: 6px;
+}
+
+.filter-list {
+    width: 90%;
+    display: inline-block;
+    color: #888;
+    font-style: italic;
+}
+
+.filter-list strong {
+    color: #000;
+    font-style: normal;
+}
+
+.filter-options {
+    width: 10%;
+    float: right;
+    text-align: right;
+}
+
+.results {
+    margin-left: 0;
+}
+
+.results li:not(:first-child) {
+    border-top: 1px dotted #CCC;
+}
+
+.results li {
+    padding-left: 3px;
+    padding-right: 3px;
+    line-height: 1.7;
+}
+
+.results li:hover {
+    background: #ededed;
+}
+
+.results i {
+    position: relative;
+    top: 3px;
+    cursor: pointer;
+}
+
+.truncate {
+    width: 290px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.no-results {
+    display: none;
+}
+
+ul {
+  padding-top: 5px;
+  margin-left: 0.5em;
+}
+
+.input-append input {
+  width: 74%;
+}
+
+.label-warning {
+  font-size: 10px;
+  padding: 0px 2px 0px 3px;
+}
+
+.row-fluid [class*="span"] {
+  min-height: 20px;
+}
+
+.entries {
+  padding-top: 10px;
+}
+.entry-text {
+  padding-left: 0.3em;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space:nowrap;
+  padding-left:none;
+}
+
+section div.well.well-small {
+  margin-bottom: 0px;
+}

@@ -1,7 +1,7 @@
 {
-  "name": "Ticket Suggestion App",
+  "name": "Mentor's Solutions App",
   "author": {
-    "name": "Bulleit Shooters",
+    "name": "SoS Apps",
     "email": "epritchard@zendesk.com",
     "url": "http://www.github.com/epritchard"
   },
@@ -9,5 +9,11 @@
   "private": true,
   "location": "ticket_sidebar",
   "version": "1.0",
-  "frameworkVersion": "1.0"
+  "frameworkVersion": "1.0",
+  "parameters": [
+    {
+      "name": "About Field ID",
+      "type": "number"
+    }
+  ]
 }
