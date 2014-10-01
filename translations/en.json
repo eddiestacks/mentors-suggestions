@@ -10,6 +10,16 @@
       "title": "app name"
     }
   },
+  "layout": {
+    "placeholder_text": {
+      "title": "Placeholder text in the search bar",
+      "value": "Type your search here"
+    },
+    "search_button": {
+      "title": "Search button when clicked triggers a search",
+      "value": "Search"
+    }
+  },
   "loading": {
     "value": "Welcome to this Sample App",
     "title": "loading placeholder"
