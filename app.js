@@ -11,26 +11,29 @@
     defaultState: 'loading',
     defaultNumberOfEntriesToDisplay: 5,
 
-    // APP EVENTS
     events: {
+      // APP EVENTS
       'app.activated' : 'init',
       'ticket.subject.changed' : _.debounce(function(){ this.init(); }, 500), // Rerun the search if the subject changes
       'ticket.custom_field_{{About Field ID}}.changed' : _.debounce(function(){ this.init(); }, 500), // Rerun the search if the About field changes
+      
+      // AJAX EVENTS
       'runTicketSearch.done' : 'displayResults',
       'runTicketSearch.fail' : 'displayError',
+      
+      // DOM EVENTS
+      'click .toggle-app': 'toggleAppContainer',
       'click .btn-search' : 'manualSearch',
       'click .btn-ticketSuggestions' : function(){
         if (this.$('.btn-ticketSuggestions').hasClass('active') !== true) {
-          this.$('.btn-ticketSuggestions').toggleClass('active');
-          this.$('.btn-answerSuggestions').toggleClass('active');
+          this.$('.app-btn').toggleClass('active');
           this.switchTo(this.defaultState);
           this.init();
         }
       },
       'click .btn-answerSuggestions' : function(){
         if (this.$('.btn-answerSuggestions').hasClass('active') !== true) {
-          this.$('.btn-ticketSuggestions').toggleClass('active');
-          this.$('.btn-answerSuggestions').toggleClass('active');
+          this.$('.app-btn').toggleClass('active');
           this.switchTo(this.defaultState);
         }
       }
@@ -97,6 +100,19 @@
     displayError: function(data) {
       console.log("there was an error");
       console.log(data);
+    },
+
+    toggleAppContainer: function(){
+      var $container = this.$('.app-container'),
+      $icon = this.$('.toggle-app i');
+
+      if ($container.is(':visible')){
+        $container.hide();
+        $icon.prop('class', 'icon-plus');
+      } else {
+        $container.show();
+        $icon.prop('class', 'icon-minus');
+      }
     }
 
 
