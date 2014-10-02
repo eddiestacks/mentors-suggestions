@@ -14,6 +14,27 @@
     {
       "name": "About Field ID",
       "type": "number"
+    },
+    {
+      "name": "nb_entries",
+      "type": "number"
+    },
+    {
+      "name": "custom_host",
+      "type": "url"
+    },
+    {
+      "name": "include_title",
+      "type": "checkbox",
+      "default": "1"
+    },
+    {
+      "name": "search_hc",
+      "type": "checkbox"
+    },
+    {
+      "name": "exclude_agent_only",
+      "type": "checkbox"
     }
   ]
 }
