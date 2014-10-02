@@ -90,7 +90,7 @@
         }
       }
 
-      this.switchTo('ticketSuggestion', {
+      this.switchTo('ticketSuggestions', {
         resultList: resultList,
         aboutFilter: this.aboutFieldContents
       });
