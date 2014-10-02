@@ -13,25 +13,29 @@
 
     events: {
       // APP EVENTS
-      'app.activated' : 'init',
-      'ticket.subject.changed' : _.debounce(function(){ this.init(); }, 500), // Rerun the search if the subject changes
-      'ticket.custom_field_{{About Field ID}}.changed' : _.debounce(function(){ this.init(); }, 500), // Rerun the search if the About field changes
-      
+      'app.activated': 'init',
+      'ticket.subject.changed': _.debounce(function() {
+        this.init();
+      }, 500), // Rerun the search if the subject changes
+      'ticket.custom_field_{{About Field ID}}.changed': _.debounce(function() {
+        this.init();
+      }, 500), // Rerun the search if the About field changes
+
       // AJAX EVENTS
-      'runTicketSearch.done' : 'displayResults',
-      'runTicketSearch.fail' : 'displayError',
-      
+      'runTicketSearch.done': 'displayResults',
+      'runTicketSearch.fail': 'displayError',
+
       // DOM EVENTS
       'click .toggle-app': 'toggleAppContainer',
-      'click .btn-search' : 'manualSearch',
-      'click .btn-ticketSuggestions' : function(){
+      'click .btn-search': 'manualSearch',
+      'click .btn-ticketSuggestions': function() {
         if (this.$('.btn-ticketSuggestions').hasClass('active') !== true) {
           this.$('.app-btn').toggleClass('active');
           this.switchTo(this.defaultState);
           this.init();
         }
       },
-      'click .btn-answerSuggestions' : function(){
+      'click .btn-answerSuggestions': function() {
         if (this.$('.btn-answerSuggestions').hasClass('active') !== true) {
           this.$('.app-btn').toggleClass('active');
           this.switchTo(this.defaultState);
@@ -44,14 +48,14 @@
       runTicketSearch: function(query, aboutField) {
         // if About Field is empty, leave it out of the search.
         var searchQuery = query + ' type:ticket ' + (!_.isEmpty(aboutField) ? 'fieldvalue:' + this.aboutFieldContents : '');
-        console.log('searchQuery ' , searchQuery);
+        console.log('searchQuery ', searchQuery);
         return {
           url: helpers.fmt('/api/v2/search.json?query=%@', searchQuery),
           type: 'GET'
         };
       }
     },
-  
+
     init: function() {
       // Get the ID for the About Field, store its contents, and declare necessary variables
       this.aboutFieldID = 'custom_field_' + this.setting('About Field ID');
@@ -66,9 +70,9 @@
 
     displayResults: function(data) {
       var resultList = [],
-          resCount = data.count,
-          resTicketID,
-          resTicketSubject;
+        resCount = data.count,
+        resTicketID,
+        resTicketSubject;
 
       // Loop through results and prep them for display
       for (var resultIndex = 0; resultIndex < this.defaultNumberOfEntriesToDisplay && resultIndex < resCount; resultIndex++) {
@@ -78,12 +82,18 @@
         resTicketSubject = data.results[resultIndex].subject;
 
         // Test if result is not current ticket being viewed, and if not, add it to resultList array
-        if ( this.ticket().id() != data.results[resultIndex].id) {
-          resultList.push({'title':resTicketSubject, 'link': '/agent/#/tickets/' + resTicketID});
+        if (this.ticket().id() != data.results[resultIndex].id) {
+          resultList.push({
+            'title': resTicketSubject,
+            'link': '/agent/#/tickets/' + resTicketID
+          });
         }
       }
 
-      this.switchTo('ticketSuggestion', {resultList: resultList, aboutFilter: this.aboutFieldContents});
+      this.switchTo('ticketSuggestion', {
+        resultList: resultList,
+        aboutFilter: this.aboutFieldContents
+      });
       // If zero results were returned, display message
       if (resultList.length === 0) {
         this.$('.no-results').show();
@@ -102,11 +112,11 @@
       console.log(data);
     },
 
-    toggleAppContainer: function(){
+    toggleAppContainer: function() {
       var $container = this.$('.app-container'),
-      $icon = this.$('.toggle-app i');
+        $icon = this.$('.toggle-app i');
 
-      if ($container.is(':visible')){
+      if ($container.is(':visible')) {
         $container.hide();
         $icon.prop('class', 'icon-plus');
       } else {
