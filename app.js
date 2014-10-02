@@ -54,7 +54,7 @@
           type: 'GET'
         };
       },
-      
+
       getHcArticle: function(id) {
         return {
           url: helpers.fmt('/api/v2/help_center/articles/%@.json?include=translations,sections', id),
@@ -95,6 +95,7 @@
       // Search for tickets in the current about field with the extracted keywords
       this.search();
     },
+
     search: function(query) {
       this.switchTo('spinner');
       if (this.$('btn-ticketSuggestions').hasClass('active')) {
@@ -109,6 +110,7 @@
       };
 
     },
+
     displayResults: function(data) {
       var resultList = [],
         resCount = data.count,
@@ -164,7 +166,21 @@
         $container.show();
         $icon.prop('class', 'icon-minus');
       }
+    },
+
+    queryLimit: function() {
+      // ugly hack to return more results than needed because we filter out agent only content
+      if (this.setting('exclude_agent_only') && !this.setting('search_hc')) {
+        return this.numberOfDisplayableEntries() * 2;
+      } else {
+        return this.numberOfDisplayableEntries();
+      }
+    },
+    
+    numberOfDisplayableEntries: function() {
+      return this.setting('nb_entries') || this.defaultNumberOfEntriesToDisplay;
     }
+
 
 
   };
