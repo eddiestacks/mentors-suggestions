@@ -32,7 +32,7 @@
         if (this.$('.btn-ticketSuggestions').hasClass('active') !== true) {
           this.$('.app-btn').toggleClass('active');
           this.switchTo(this.defaultState);
-          this.activated();
+          this.search();
         }
       },
       'click .btn-answerSuggestions': function() {
@@ -83,23 +83,19 @@
         };
       }
     },
-    activated: function(app){
+
+    activated: function(app) {
       if (app.firstLoad)
-        // Get the ID for the About Field, store its contents, and declare necessary variables
+      // Get the ID for the About Field, store its contents, and declare necessary variables
         this.aboutFieldID = 'custom_field_' + this.setting('About Field ID');
-        this.aboutFieldContents = this.ticket().customField(this.aboutFieldID);
-        return this.search(Lexer.extractKeywords(5, this).join(' '));
-    },
-    init: function() {
-      // Call algorithm to analyze keywords and return 5 results
-      // Search for tickets in the current about field with the extracted keywords
-      this.search();
+      this.aboutFieldContents = this.ticket().customField(this.aboutFieldID);
+      return this.search();
     },
 
     search: function(query) {
       this.switchTo('spinner');
-      if (this.$('btn-ticketSuggestions').hasClass('active')) {
-        this.ajax('runTicketSearch', query, this.aboutFieldContents);
+      if (this.$('.btn-ticketSuggestions').hasClass('active')) {
+        this.ajax('runTicketSearch', Lexer.extractKeywords(5, this).join(' '), this.aboutFieldContents);
         // this.ajax('runTicketSearch', query);
       } else {
         if (this.setting('search_hc')) {
