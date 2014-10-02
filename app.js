@@ -22,6 +22,7 @@
       'runTicketSearch.fail' : 'displayError',
       
       // DOM EVENTS
+      'click .toggle-app': 'toggleAppContainer',
       'click .btn-search' : 'manualSearch',
       'click .btn-ticketSuggestions' : function(){
         if (this.$('.btn-ticketSuggestions').hasClass('active') !== true) {
@@ -99,6 +100,19 @@
     displayError: function(data) {
       console.log("there was an error");
       console.log(data);
+    },
+
+    toggleAppContainer: function(){
+      var $container = this.$('.app-container'),
+      $icon = this.$('.toggle-app i');
+
+      if ($container.is(':visible')){
+        $container.hide();
+        $icon.prop('class', 'icon-plus');
+      } else {
+        $container.show();
+        $icon.prop('class', 'icon-minus');
+      }
     }
 
 
