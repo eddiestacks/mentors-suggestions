@@ -102,9 +102,20 @@ ul {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space:nowrap;
-  padding-left:none;
 }
 
 section div.well.well-small {
   margin-bottom: 0px;
+}
+
+.icon-plus,
+.icon-minus {
+  float: right;
+  position: relative;
+  top: 4px;
+}
+
+.mentor-app {
+  height: 28px !important;
+  min-height: 28px !important;
 }

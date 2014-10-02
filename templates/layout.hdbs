@@ -1,5 +1,4 @@
-<header>
-  <span class="logo"/>
+<header class="mentor-app">
   <h3>
     <a class="toggle-app"><i class="icon-minus"></i> {{setting "name"}}</a>
   </h3>
