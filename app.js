@@ -13,12 +13,12 @@
 
     events: {
       // APP EVENTS
-      'app.activated': 'init',
+      'app.activated': 'activated',
       'ticket.subject.changed': _.debounce(function() {
-        this.init();
+        this.activated();
       }, 500), // Rerun the search if the subject changes
       'ticket.custom_field_{{About Field ID}}.changed': _.debounce(function() {
-        this.init();
+        this.activated();
       }, 500), // Rerun the search if the About field changes
 
       // AJAX EVENTS
@@ -32,7 +32,7 @@
         if (this.$('.btn-ticketSuggestions').hasClass('active') !== true) {
           this.$('.app-btn').toggleClass('active');
           this.switchTo(this.defaultState);
-          this.init();
+          this.activated();
         }
       },
       'click .btn-answerSuggestions': function() {
@@ -53,6 +53,34 @@
           url: helpers.fmt('/api/v2/search.json?query=%@', searchQuery),
           type: 'GET'
         };
+      },
+      
+      getHcArticle: function(id) {
+        return {
+          url: helpers.fmt('/api/v2/help_center/articles/%@.json?include=translations,sections', id),
+          type: 'GET'
+        };
+      },
+
+      searchHelpCenter: function(query) {
+        return {
+          url: helpers.fmt('/api/v2/help_center/articles/search.json?per_page=%@&query=%@', this.queryLimit(), query),
+          type: 'GET'
+        };
+      },
+
+      searchWebPortal: function(query) {
+        return {
+          url: helpers.fmt('/api/v2/search.json?per_page=%@&query=%@ type:topic', this.queryLimit(), query),
+          type: 'GET'
+        };
+      },
+
+      fetchTopicsWithForums: function(ids) {
+        return {
+          url: helpers.fmt('/api/v2/topics/show_many.json?ids=%@&include=forums', ids.join(',')),
+          type: 'POST'
+        };
       }
     },
     activated: function(app){
@@ -60,17 +88,18 @@
         // Get the ID for the About Field, store its contents, and declare necessary variables
         this.aboutFieldID = 'custom_field_' + this.setting('About Field ID');
         this.aboutFieldContents = this.ticket().customField(this.aboutFieldID);
-        return this.initialize();
+        return this.search(Lexer.extractKeywords(5, this).join(' '));
     },
     init: function() {
       // Call algorithm to analyze keywords and return 5 results
       // Search for tickets in the current about field with the extracted keywords
-      this.ajax('runTicketSearch', Lexer.extractKeywords(5, this).join(' '), this.aboutFieldContents);
+      this.search();
     },
     search: function(query) {
       this.switchTo('spinner');
       if (this.$('btn-ticketSuggestions').hasClass('active')) {
-        this.ajax('runTicketSearch', query);
+        this.ajax('runTicketSearch', query, this.aboutFieldContents);
+        // this.ajax('runTicketSearch', query);
       } else {
         if (this.setting('search_hc')) {
           this.ajax('searchHelpCenter', query);
