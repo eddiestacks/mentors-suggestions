@@ -55,17 +55,17 @@
         };
       }
     },
-
+    activated: function(app){
+      if (app.firstLoad)
+        // Get the ID for the About Field, store its contents, and declare necessary variables
+        this.aboutFieldID = 'custom_field_' + this.setting('About Field ID');
+        this.aboutFieldContents = this.ticket().customField(this.aboutFieldID);
+        return this.initialize();
+    },
     init: function() {
-      // Get the ID for the About Field, store its contents, and declare necessary variables
-      this.aboutFieldID = 'custom_field_' + this.setting('About Field ID');
-      this.aboutFieldContents = this.ticket().customField(this.aboutFieldID);
-
       // Call algorithm to analyze keywords and return 5 results
-      var keywords = Lexer.extractKeywords(5, this);
-
       // Search for tickets in the current about field with the extracted keywords
-      this.ajax('runTicketSearch', keywords.join(' '), this.aboutFieldContents);
+      this.ajax('runTicketSearch', Lexer.extractKeywords(5, this).join(' '), this.aboutFieldContents);
     },
 
     displayResults: function(data) {
