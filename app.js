@@ -67,7 +67,19 @@
       // Search for tickets in the current about field with the extracted keywords
       this.ajax('runTicketSearch', Lexer.extractKeywords(5, this).join(' '), this.aboutFieldContents);
     },
+    search: function(query) {
+      this.switchTo('spinner');
+      if (this.$('btn-ticketSuggestions').hasClass('active')) {
+        this.ajax('runTicketSearch', query);
+      } else {
+        if (this.setting('search_hc')) {
+          this.ajax('searchHelpCenter', query);
+        } else {
+          this.ajax('searchWebPortal', query);
+        }
+      };
 
+    },
     displayResults: function(data) {
       var resultList = [],
         resCount = data.count,
