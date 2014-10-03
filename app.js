@@ -16,8 +16,10 @@
       'app.activated': 'activated',
       'ticket.custom_field_{{About Field ID}}.changed': _.debounce(function() {
         this.aboutFieldContents = this.ticket().customField(this.aboutFieldID);
-        console.log('this.ticketMode ' , this.ticketMode());
-        if (this.ticketMode()) {this.search()};
+        console.log('this.ticketMode ', this.ticketMode());
+        if (this.ticketMode()) {
+          this.search()
+        };
       }, 500), // Rerun the search if the About field changes
 
       // AJAX EVENTS
@@ -49,8 +51,8 @@
       'click a.main.preview_link': 'previewLink',
       'dragend,click a.copy_link': 'copyLink',
       'dragend a.main': 'copyLink',
-      'keyup input.manualSearch': function(event){
-        if(event.keyCode === 13)
+      'keyup input.manualSearch': function(event) {
+        if (event.keyCode === 13)
           return this.manualSearch();
       },
 
@@ -138,36 +140,38 @@
       return this.$('.btn-ticketSuggestions').hasClass('active') == true;
     },
     displayResults: function(data) {
-      var resultList = [],
-        resCount = data.count,
-        resTicketID,
-        resTicketSubject;
+      if (this.ticketMode()) {
+        var resultList = [],
+          resCount = data.count,
+          resTicketID,
+          resTicketSubject;
 
-      // Loop through results and prep them for display
-      for (var resultIndex = 0; resultIndex < this.defaultNumberOfEntriesToDisplay && resultIndex < resCount; resultIndex++) {
+        // Loop through results and prep them for display
+        for (var resultIndex = 0; resultIndex < this.defaultNumberOfEntriesToDisplay && resultIndex < resCount; resultIndex++) {
 
-        // Set result Ticket ID to resTicketID, and result Ticket Subject to resTicketSubject
-        resTicketID = data.results[resultIndex].id;
-        resTicketSubject = data.results[resultIndex].subject;
+          // Set result Ticket ID to resTicketID, and result Ticket Subject to resTicketSubject
+          resTicketID = data.results[resultIndex].id;
+          resTicketSubject = data.results[resultIndex].subject;
 
-        // Test if result is not current ticket being viewed, and if not, add it to resultList array
-        if (this.ticket().id() != data.results[resultIndex].id) {
-          resultList.push({
-            'title': resTicketSubject,
-            'link': '/agent/#/tickets/' + resTicketID
-          });
+          // Test if result is not current ticket being viewed, and if not, add it to resultList array
+          if (this.ticket().id() != data.results[resultIndex].id) {
+            resultList.push({
+              'title': resTicketSubject,
+              'link': '/agent/#/tickets/' + resTicketID
+            });
+          }
         }
-      }
 
-      this.switchTo('ticketSuggestions', {
-        resultList: resultList,
-        aboutFilter: this.aboutFieldContents
-      });
-      // If zero results were returned, display message
-      if (resultList.length === 0) {
-        this.$('.no-results').show();
-      } else {
-        this.$('.no-results').hide();
+        this.switchTo('ticketSuggestions', {
+          resultList: resultList,
+          aboutFilter: this.aboutFieldContents
+        });
+        // If zero results were returned, display message
+        if (resultList.length === 0) {
+          this.$('.no-results').show();
+        } else {
+          this.$('.no-results').hide();
+        }
       }
     },
 
@@ -230,24 +234,28 @@
     },
 
     searchHelpCenterDone: function(data) {
-      this.renderList(this.formatHcEntries(data.results));
+      if (!this.ticketMode()) {
+        this.renderList(this.formatHcEntries(data.results));
+      }
     },
 
     searchWebPortalDone: function(data) {
-      if (_.isEmpty(data.results))
-        return this.switchTo('no_entries');
+      if (!this.ticketMode()) {
+        if (_.isEmpty(data.results))
+          return this.switchTo('no_entries');
 
-      var topics = data.results,
-        topicIds = _.map(topics, function(topic) {
-          return topic.id;
-        });
+        var topics = data.results,
+          topicIds = _.map(topics, function(topic) {
+            return topic.id;
+          });
 
-      this.ajax('fetchTopicsWithForums', topicIds)
-        .done(function(data) {
-          var entries = this.formatEntries(topics, data);
-          this.store('entries', entries);
-          this.renderList(entries);
-        });
+        this.ajax('fetchTopicsWithForums', topicIds)
+          .done(function(data) {
+            var entries = this.formatEntries(topics, data);
+            this.store('entries', entries);
+            this.renderList(entries);
+          });
+      }
     },
 
     renderList: function(data) {
