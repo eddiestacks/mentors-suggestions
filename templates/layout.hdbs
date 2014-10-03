@@ -16,4 +16,7 @@
   </div>
   
   <section data-main/>
+  
+  <div class="modal hide fade" tabindex="-1" role="dialog" id="detailsModal">
+  </div>
 </div>
