@@ -108,18 +108,15 @@
     },
 
     activated: function(app) {
-      if (app.firstLoad) { 
-          this.initialize
+      if (app.firstLoad) {
+        this.initialize
       }
     },
 
     initialize: function() {
-      // if (_.isEmpty(this.ticket().subject()))
-      //   return this.switchTo('no_subject');
-      if (this.ticketMode()
-        // Get the ID for the About Field, store its contents, and declare necessary variables) {
-        this.aboutFieldID = 'custom_field_' + this.setting('About Field ID');
-        this.aboutFieldContents = this.ticket().customField(this.aboutFieldID);
+      if (this.ticketMode()) {
+        // Get the ID for the About Field, store its contents, and declare necessary variables)
+        this.aboutFieldID = 'custom_field_' + this.setting('About Field ID'); this.aboutFieldContents = this.ticket().customField(this.aboutFieldID);
         return this.search();
       } else {
         this.ajax('settings').then(function() {
