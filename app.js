@@ -122,7 +122,7 @@
 
     search: function(query) {
       this.switchTo('loading');
-      var search_query = query || Lexer.extractKeywords(5, this).join(' ');
+      var search_query = query || Lexer.extractKeywords(4, this).join(' ');
       console.log('search_query ', search_query);
 
       if (this.$('.btn-ticketSuggestions').hasClass('active')) {
