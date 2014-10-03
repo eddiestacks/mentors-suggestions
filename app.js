@@ -14,9 +14,13 @@
     events: {
       // APP EVENTS
       'app.activated': 'activated',
+
+      'ticket.subject.changed': _.debounce(function() {
+        this.initialize();
+      }, 500), // Rerun the search if the subject changes
+
       'ticket.custom_field_{{About Field ID}}.changed': _.debounce(function() {
         this.aboutFieldContents = this.ticket().customField(this.aboutFieldID);
-        console.log('this.ticketMode ', this.ticketMode());
         if (this.ticketMode()) {
           this.search()
         };
@@ -104,19 +108,24 @@
     },
 
     activated: function(app) {
-      if (app.firstLoad) { // Get the ID for the About Field, store its contents, and declare necessary variables
-        this.aboutFieldID = 'custom_field_' + this.setting('About Field ID');
-        this.aboutFieldContents = this.ticket().customField(this.aboutFieldID);
-        return this.search();
+      if (app.firstLoad) { 
+          this.initialize
       }
     },
 
     initialize: function() {
       // if (_.isEmpty(this.ticket().subject()))
       //   return this.switchTo('no_subject');
-      this.ajax('settings').then(function() {
-        this.search();
-      }.bind(this));
+      if (this.ticketMode()
+        // Get the ID for the About Field, store its contents, and declare necessary variables) {
+        this.aboutFieldID = 'custom_field_' + this.setting('About Field ID');
+        this.aboutFieldContents = this.ticket().customField(this.aboutFieldID);
+        return this.search();
+      } else {
+        this.ajax('settings').then(function() {
+          this.search();
+        }.bind(this));
+      }
     },
 
 
