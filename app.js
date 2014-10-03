@@ -85,23 +85,26 @@
     },
 
     activated: function(app) {
-      if (app.firstLoad)
-      // Get the ID for the About Field, store its contents, and declare necessary variables
+      if (app.firstLoad) { // Get the ID for the About Field, store its contents, and declare necessary variables
         this.aboutFieldID = 'custom_field_' + this.setting('About Field ID');
-      this.aboutFieldContents = this.ticket().customField(this.aboutFieldID);
-      return this.search();
+        this.aboutFieldContents = this.ticket().customField(this.aboutFieldID);
+        return this.search();
+      }
+    },
     },
 
     search: function(query) {
       this.switchTo('spinner');
+      var search_query = query || Lexer.extractKeywords(5, this).join(' ');
+      console.log('search_query ' , search_query);
       if (this.$('.btn-ticketSuggestions').hasClass('active')) {
-        this.ajax('runTicketSearch', Lexer.extractKeywords(5, this).join(' '), this.aboutFieldContents);
+        this.ajax('runTicketSearch', search_query, this.aboutFieldContents);
         // this.ajax('runTicketSearch', query);
       } else {
         if (this.setting('search_hc')) {
-          this.ajax('searchHelpCenter', query);
+          this.ajax('searchHelpCenter', search_query);
         } else {
-          this.ajax('searchWebPortal', query);
+          this.ajax('searchWebPortal', search_query);
         }
       };
 
@@ -172,7 +175,7 @@
         return this.numberOfDisplayableEntries();
       }
     },
-    
+
     numberOfDisplayableEntries: function() {
       return this.setting('nb_entries') || this.defaultNumberOfEntriesToDisplay;
     }
