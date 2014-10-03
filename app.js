@@ -109,7 +109,7 @@
 
     activated: function(app) {
       if (app.firstLoad) {
-        this.initialize
+        this.initialize();
       }
     },
 
