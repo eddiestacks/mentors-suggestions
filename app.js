@@ -39,6 +39,7 @@
         if (this.$('.btn-answerSuggestions').hasClass('active') !== true) {
           this.$('.app-btn').toggleClass('active');
           this.switchTo(this.defaultState);
+          this.search();
         }
       }
 
@@ -91,6 +92,13 @@
         return this.search();
       }
     },
+
+    initialize: function() {
+      // if (_.isEmpty(this.ticket().subject()))
+      //   return this.switchTo('no_subject');
+      this.ajax('settings').then(function() {
+        this.search();
+      }.bind(this));
     },
 
     search: function(query) {
