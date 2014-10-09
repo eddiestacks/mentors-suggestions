@@ -374,6 +374,16 @@
         this.renderTopicContent(id);
       }
     },
+    hcArticleLocaleContent: function(data) {
+      var currentLocale = this.currentUser().locale(),
+          translations = data.article.translations;
+
+      var localizedTranslation = _.find(translations, function(translation) {
+        return translation.locale.toLowerCase() === currentLocale.toLowerCase();
+      });
+
+      return localizedTranslation && localizedTranslation.body || translations[0].body;
+    },
 
     appendToComment: function(text) {
       var old_text = _.isEmpty(this.comment().text()) ? '' : this.comment().text() + '\n';
