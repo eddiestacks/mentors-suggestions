@@ -192,7 +192,12 @@
     },
 
     manualSearch: function() {
-      this.search(this.$('.manualSearch').val().trim());
+      
+      // Get current search terms by pulling them from the <li> elements
+      var manualSearchTerms = this.$('.searchBox li').text();
+      manualSearchTerms = manualSearchTerms.split(' ×');
+
+      this.search(manualSearchTerms);
     },
 
     displayError: function(data) {
