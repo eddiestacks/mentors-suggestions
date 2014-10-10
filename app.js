@@ -128,8 +128,18 @@
 
     search: function(query) {
       this.switchTo('loading');
+      var lexerKeywords = Lexer.extractKeywords(4, this);
+      var currentTerms = this.$('.searchBox li');
+
+      // Render search term cloud
+      if(currentTerms.length === 0) {
+        _.each(lexerKeywords, function(keyword) {
+        this.$('.searchBox').append("<li class='term'><span>" + keyword + "</span> <a class='delete' tabindex='-1'>×</a></li>");
+        });
+        this.$('.searchBox').append("<li><input type='text' class='highlightable'></li>");
+      }
+      
       var search_query = query || Lexer.extractKeywords(4, this).join(' ');
-      console.log('search_query ', search_query);
 
       if (this.$('.btn-ticketSuggestions').hasClass('active')) {
         this.ajax('runTicketSearch', search_query, this.aboutFieldContents);
@@ -139,11 +149,11 @@
         } else {
           this.ajax('searchWebPortal', search_query);
         }
-      };
+      }
 
     },
     ticketMode: function() {
-      return this.$('.btn-ticketSuggestions').hasClass('active') == true;
+      return this.$('.btn-ticketSuggestions').hasClass('active') === true;
     },
     displayResults: function(data) {
       if (this.ticketMode()) {
@@ -182,7 +192,7 @@
     },
 
     manualSearch: function() {
-      this.search(this.$('input.manualSearch').val().trim());
+      this.search(this.$('.manualSearch').val().trim());
     },
 
     displayError: function(data) {
@@ -395,10 +405,6 @@
         return word.trim();
       });
     }),
-
-    numberOfDisplayableEntries: function() {
-      return this.setting('nb_entries') || this.defaultNumberOfEntriesToDisplay;
-    },
 
   };
 }());

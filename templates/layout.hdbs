@@ -11,7 +11,8 @@
   </div>
   
   <div class="input-append custom-search">
-    <input type="text" class="search manualSearch" placeholder="{{t "layout.placeholder_text"}}">
+    <ul class="searchBox">
+    </ul>
     <button class="btn btn-search" type="button">{{t "layout.search_button"}}</button>
   </div>
   

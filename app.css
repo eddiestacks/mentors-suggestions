@@ -15,10 +15,6 @@
     width: 50%;
 }
 
-.search {
-    width: 76%;
-}
-
 .filters {
     padding: 6px;
 }
@@ -81,10 +77,6 @@ ul {
   margin-left: 0.5em;
 }
 
-.input-append input {
-  width: 74%;
-}
-
 .label-warning {
   font-size: 10px;
   padding: 0 2px 0 3px;
@@ -121,28 +113,68 @@ ul {
 }
 
 /* ---- styles for keyword cloud ---- */
-.token_list {
-    width: 97%;
-    cursor: default;
+.searchBox {
+  width: 97%;
+  cursor: default;
+  border: 1px solid #d3d3d3;
+  padding: 4px;
+  padding-bottom: 0;
+  list-style-type: none;
+  margin: 0;
+  float: left;
+  cursor: text;
+  border-radius: 2px;
 }
 
-.availableTag {
-    background-color: #d1f5cb;  
+.searchBox .term {
+  background: #f4f4f4;
+  position: relative;
+  display: block;
+  float: left;
+  margin: 0 3px 3px 0;
+  padding: 3px 17px 4px 6px;
+  background: #fafafa;
+  font-size: 11px;
+  line-height: 13px;
+  color: #333;
+  min-height: 13px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  border: 1px solid #ddd;
+  word-break: break-all;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
 }
 
-.token_list .token a.delete {
-    font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
-    font-size: 12px;
-    line-height: 12px;
-    color: #C6C6C6;
-    cursor: pointer;
-    outline: medium none;
-    background-color: transparent;
-    position: absolute;
-    right: 6px;
-    top: 3px;
+.searchBox .term a.delete {
+  font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  font-size: 12px;
+  line-height: 12px;
+  color: #C6C6C6;
+  cursor: pointer;
+  outline: medium none;
+  background-color: transparent;
+  position: absolute;
+  right: 6px;
+  top: 3px;
 }
 
-.token_list .token a.delete:hover {
-    color: #000;
+.searchBox .term a.delete:hover {
+  color: #000;
+}
+
+.searchBox input {
+  border: none;
+  outline: none;
+  float: left;
+  padding: 1px 1px 3px 0;
+  background: transparent;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
 }
