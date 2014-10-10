@@ -15,7 +15,7 @@
     width: 50%;
 }
 
-input.search {
+.search {
     width: 76%;
 }
 
@@ -87,7 +87,7 @@ ul {
 
 .label-warning {
   font-size: 10px;
-  padding: 0px 2px 0px 3px;
+  padding: 0 2px 0 3px;
 }
 
 .row-fluid [class*="span"] {
@@ -104,8 +104,8 @@ ul {
   white-space:nowrap;
 }
 
-section div.well.well-small {
-  margin-bottom: 0px;
+.well .well-small {
+  margin-bottom: 0;
 }
 
 .icon-plus,
@@ -118,4 +118,31 @@ section div.well.well-small {
 .mentor-app {
   height: 28px !important;
   min-height: 28px !important;
+}
+
+/* ---- styles for keyword cloud ---- */
+.token_list {
+    width: 97%;
+    cursor: default;
+}
+
+.availableTag {
+    background-color: #d1f5cb;  
+}
+
+.token_list .token a.delete {
+    font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+    font-size: 12px;
+    line-height: 12px;
+    color: #C6C6C6;
+    cursor: pointer;
+    outline: medium none;
+    background-color: transparent;
+    position: absolute;
+    right: 6px;
+    top: 3px;
+}
+
+.token_list .token a.delete:hover {
+    color: #000;
 }
