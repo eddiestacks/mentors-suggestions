@@ -131,11 +131,16 @@
       this.switchTo('loading');
       var lexerKeywords = Lexer.extractKeywords(4, this);
       var currentTerms = this.$('.searchBox li');
-
+        var that = this;
+    
       // Render search term cloud
       if(currentTerms.length === 0) {
         _.each(lexerKeywords, function(keyword) {
-        this.$('.searchBox').append("<li class='term' onclick='$(this).remove();'><span>" + keyword + "</span> <a class='delete' tabindex='-1'>×</a></li>");
+        this.$('.searchBox').append("<li class='term'><span>" + keyword + "</span> <a class='delete' tabindex='-1'>×</a></li>");
+        this.$('.searchBox li').on('click', function(evt) {
+            evt.currentTarget.remove();
+            that.manualSearch();
+        });
         });
         this.$('.searchBox').append("<li><input type='text' class='highlightable'></li>");
       }
@@ -199,6 +204,7 @@
       manualSearchTerms = manualSearchTerms.split(' ×');
 
       this.search(manualSearchTerms);
+      console.log(manualSearchTerms);
     },
 
     displayError: function(data) {
