@@ -1,6 +1,7 @@
 (function() {
 
   var Lexer = require('lexer.js');
+  var Arrive = require('arrive.js');
 
   return {
 
@@ -134,7 +135,7 @@
       // Render search term cloud
       if(currentTerms.length === 0) {
         _.each(lexerKeywords, function(keyword) {
-        this.$('.searchBox').append("<li class='term'><span>" + keyword + "</span> <a class='delete' tabindex='-1'>×</a></li>");
+        this.$('.searchBox').append("<li class='term' onclick='$(this).remove();'><span>" + keyword + "</span> <a class='delete' tabindex='-1'>×</a></li>");
         });
         this.$('.searchBox').append("<li><input type='text' class='highlightable'></li>");
       }
