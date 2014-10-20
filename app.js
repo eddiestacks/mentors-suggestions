@@ -52,6 +52,26 @@
           this.initialize();
         }
       },
+
+      'click .searchBox li': function(evt){
+          if(evt.currentTarget.childNodes.length > 1){
+            evt.currentTarget.remove();
+            this.manualSearch();
+            this.$('.manualEntry').focus();
+          }
+      },
+
+      'keyup .searchBox': function(e){
+        var that = this;
+        if (e.keyCode === 32) {
+          var enteredText = this.$('.manualEntry').val();
+          this.$('.manualEntry').parent().empty().addClass('term').append(enteredText + "<a class='delete' tabindex='-1'>×</a>");
+          this.manualSearch();
+          this.$('.searchBox').append("<li><input type='text' class='highlightable manualEntry'></li>");
+          this.$('.manualEntry').focus();
+        }
+      },
+
       // Answer suggestion app DOM Events
       'click a.main.preview_link': 'previewLink',
       'dragend,click a.copy_link': 'copyLink',
@@ -59,16 +79,6 @@
       'keyup input.manualSearch': function(event) {
         if (event.keyCode === 13)
           return this.manualSearch();
-      },
-      'keyup .searchBox': function(e){
-        var that = this;
-        if (e.keyCode === 32) {
-      var enteredText = this.$('.manualEntry').val();
-      this.$('.manualEntry').parent().empty().addClass('term').append(enteredText + "<a class='delete' tabindex='-1'>×</a>");
-      this.manualSearch();
-      this.$('.searchBox').append("<li><input type='text' class='highlightable manualEntry'></li>");
-      this.$('.manualEntry').focus();
-}
       },
 
     },
@@ -146,10 +156,6 @@
       if(currentTerms.length === 0) {
         _.each(lexerKeywords, function(keyword) {
         this.$('.searchBox').append("<li class='term'><span>" + keyword + "</span> <a class='delete' tabindex='-1'>×</a></li>");
-        this.$('.searchBox li').on('click', function(evt) {
-            evt.currentTarget.remove();
-            that.manualSearch();
-        });
         });
       this.$('.searchBox').append("<li><input type='text' class='highlightable manualEntry'></li>");
       }
