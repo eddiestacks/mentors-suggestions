@@ -13,6 +13,12 @@
   <div class="input-append custom-search">
     <ul class="searchBox">
     </ul>
+  </div>
+
+  <br />
+  <br />
+
+  <div class="search-button">
     <button class="btn btn-search" type="button">{{t "layout.search_button"}}</button>
   </div>
   
