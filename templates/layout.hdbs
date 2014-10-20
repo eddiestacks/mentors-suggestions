@@ -6,8 +6,8 @@
 
 <div class="app-container">
   <div class="btn-group app-selector" data-toggle="buttons-radio">
-    <button type="button" class="btn app-btn btn-ticketSuggestions active">Ticket Suggestions</button>
-    <button type="button" class="btn app-btn btn-answerSuggestions">Answer Suggestions</button>
+    <button type="button" class="btn app-btn btn-ticketSuggestions active">Tickets</button>
+    <button type="button" class="btn app-btn btn-answerSuggestions">Knowledge Base</button>
   </div>
   
   <div class="input-append custom-search">
