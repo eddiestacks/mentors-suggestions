@@ -59,8 +59,7 @@
       'keyup input.manualSearch': function(event) {
         if (event.keyCode === 13)
           return this.manualSearch();
-      },
-
+      }
 
     },
 
@@ -142,8 +141,17 @@
             that.manualSearch();
         });
         });
-        this.$('.searchBox').append("<li><input type='text' class='highlightable'></li>");
+        this.$('.searchBox').append("<li><input type='text' class='highlightable manualEntry'></li>");
+      
       }
+
+      this.$('.manualEntry').keyup(function(e) {
+    if (e.keyCode == 32) {
+      var enteredText = that.$(this).val();
+      that.$(this).parent().empty().addClass('term').append(enteredText + "<a class='delete' tabindex='-1'>×</a>");
+      that.manualSearch();
+      that.$('.searchBox').append("<li><input type='text' class='highlightable manualEntry'></li>");
+    }});
       
       var search_query = query || Lexer.extractKeywords(4, this).join(' ');
 
