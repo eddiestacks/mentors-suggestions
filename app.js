@@ -59,7 +59,7 @@
       'keyup input.manualSearch': function(event) {
         if (event.keyCode === 13)
           return this.manualSearch();
-      }
+      },
 
     },
 
