@@ -62,7 +62,6 @@
       },
 
       'keyup .searchBox': function(e){
-        var that = this;
         if (e.keyCode === 32) {
           var enteredText = this.$('.manualEntry').val();
           this.$('.manualEntry').parent().empty().addClass('term').append(enteredText + "<a class='delete' tabindex='-1'>×</a>");
