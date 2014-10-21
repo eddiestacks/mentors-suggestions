@@ -7,9 +7,9 @@
 <div class="app-container">
   <div class="btn-group app-selector" data-toggle="buttons-radio">
     <button type="button" class="btn app-btn btn-ticketSuggestions active">Tickets</button>
-    <button type="button" class="btn app-btn btn-answerSuggestions">Knowledge Base</button>
+    <button type="button" class="btn app-btn btn-answerSuggestions">Knowledgebase</button>
   </div>
-  
+
   <div class="input-append custom-search">
     <ul class="searchBox">
     </ul>
@@ -21,9 +21,9 @@
   <div class="search-button">
     <button class="btn btn-search" type="button">{{t "layout.search_button"}}</button>
   </div>
-  
+
   <section data-main/>
-  
+
   <div class="modal hide fade" tabindex="-1" role="dialog" id="detailsModal">
   </div>
 </div>
