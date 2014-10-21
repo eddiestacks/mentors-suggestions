@@ -138,7 +138,11 @@
     activated: function(app) {
       if (app.firstLoad) {
         this.initialize();
+
+        this.$('.searchBox').addClass('ticket-' + this.ticket().id());
       }
+
+
     },
 
     initialize: function() {
@@ -159,12 +163,14 @@
       var lexerKeywords = Lexer.extractKeywords(4, this);
       var currentTerms = this.$('.searchBox li');
 
+
+
       // Render search term cloud
       if(currentTerms.length === 0) {
 
         _.each(lexerKeywords, function(keyword) {
           this.$('.searchBox').append("<li class='term'><span>" + keyword + "</span> <a class='delete' tabindex='-1'>×</a></li>");
-        });
+        }, this);
 
         this.$('.searchBox').append("<li><input type='text' class='highlightable manualEntry'></li>");
       }
