@@ -158,14 +158,15 @@
       this.switchTo('loading');
       var lexerKeywords = Lexer.extractKeywords(4, this);
       var currentTerms = this.$('.searchBox li');
-      var that = this;
 
       // Render search term cloud
       if(currentTerms.length === 0) {
+
         _.each(lexerKeywords, function(keyword) {
-        this.$('.searchBox').append("<li class='term'><span>" + keyword + "</span> <a class='delete' tabindex='-1'>×</a></li>");
+          this.$('.searchBox').append("<li class='term'><span>" + keyword + "</span> <a class='delete' tabindex='-1'>×</a></li>");
         });
-      this.$('.searchBox').append("<li><input type='text' class='highlightable manualEntry'></li>");
+
+        this.$('.searchBox').append("<li><input type='text' class='highlightable manualEntry'></li>");
       }
 
 
