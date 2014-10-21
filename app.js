@@ -199,7 +199,7 @@
           }
         }
 
-        this.switchTo('ticketSuggestions', {
+        this.switchTo('ticketResults', {
           resultList: resultList,
           aboutFilter: this.aboutFieldContents
         });
@@ -305,7 +305,7 @@
       if (_.isEmpty(data.entries)) {
         return this.switchTo('no_entries');
       } else {
-        this.switchTo('list', data);
+        this.switchTo('kbResults', data);
       }
     },
 
