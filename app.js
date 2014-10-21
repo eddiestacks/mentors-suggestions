@@ -221,9 +221,12 @@
       // Get current search terms by pulling them from the <li> elements
       var manualSearchTerms = this.$('.searchBox li').text();
       manualSearchTerms = manualSearchTerms.split(' ×');
+      manualSearchTerms.pop();    // Get rid of the blank element from the input
 
-      this.search(manualSearchTerms);
-      console.log(manualSearchTerms);
+      if(manualSearchTerms.length > 0) {
+        this.search(manualSearchTerms);
+        console.log(manualSearchTerms);
+      }
     },
 
     displayError: function(data) {
