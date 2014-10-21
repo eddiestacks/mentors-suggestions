@@ -72,7 +72,7 @@
       },
 
       // Answer suggestion app DOM Events
-      'click a.main.preview_link': 'previewLink',
+      'click a.preview_link': 'previewLink',
       'dragend,click a.copy_link': 'copyLink',
       'dragend a.main': 'copyLink',
       'keyup input.manualSearch': function(event) {
@@ -150,7 +150,7 @@
       var lexerKeywords = Lexer.extractKeywords(4, this);
       var currentTerms = this.$('.searchBox li');
         var that = this;
-    
+
       // Render search term cloud
       if(currentTerms.length === 0) {
         _.each(lexerKeywords, function(keyword) {
@@ -159,7 +159,7 @@
       this.$('.searchBox').append("<li><input type='text' class='highlightable manualEntry'></li>");
       }
 
-      
+
       var search_query = query || Lexer.extractKeywords(4, this).join(' ');
 
       if (this.$('.btn-ticketSuggestions').hasClass('active')) {
@@ -213,7 +213,7 @@
     },
 
     manualSearch: function() {
-      
+
       // Get current search terms by pulling them from the <li> elements
       var manualSearchTerms = this.$('.searchBox li').text();
       manualSearchTerms = manualSearchTerms.split(' ×');
@@ -240,7 +240,7 @@
       }
     },
 
-    // Answer Suggestion app 
+    // Answer Suggestion app
     // #####################
     queryLimit: function() {
       // ugly hack to return more results than needed because we filter out agent only content

@@ -10,7 +10,7 @@
                 <a class="dropdown-toggle pull-left" data-toggle="dropdown"><i class="icon-cog"></i></a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                   <li>
-                    <a href="{{url}}" class='preview_link' data-id="{{id}}" title="{{title}}"><i class="icon-eye-open"></i> {{t "list.preview_link"}}</a>
+                    <a href="{{url}}" class="preview_link" data-id="{{id}}" title="{{title}}"><i class="icon-eye-open"></i> {{t "list.preview_link"}}</a>
                   </li>
                   <li>
                     <a href="{{url}}" target="_blank"><i class="icon-share"></i> {{t "list.newtab_link"}}</a>
