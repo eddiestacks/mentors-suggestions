@@ -59,7 +59,7 @@
     },
     "package": "answer_suggestion_app"
   },
-  
+
   "list": {
     "newtab_link": {
       "title": "option on the article results to open it in a new browser tab",
@@ -124,7 +124,7 @@
   },
   "help_text": {
     "title": "instructions for the add to comment button",
-    "value": "Click the link to add it to the comment:"
+    "value": "Click the link to preview the article:"
   },
   "spinner": {
     "title": "Loading text",
