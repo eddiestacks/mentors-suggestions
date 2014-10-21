@@ -1,7 +1,6 @@
 <div class="ticket-suggestions-app">
     <div class="filters">
-        <div class="filter-list"><strong>About:</strong> {{aboutFilter}}</div>
-        <div class="filter-options"><i class="icon-chevron-down options-toggle"></i></div>
+        <div class="filter-list"><strong>Filter:</strong> {{aboutFilter}}</div>
     </div>
     <div class="well well-small results">
       <p class="no-results">There were no results from the current search.</p>
