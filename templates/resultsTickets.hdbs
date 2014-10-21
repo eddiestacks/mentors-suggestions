@@ -1,6 +1,6 @@
 <div class="ticket-suggestions-app">
     <div class="filters">
-        <div class="filter-list"><strong>Filter:</strong> {{aboutFilter}}</div>
+        <div class="filter-list"><strong>Filter:</strong> {{#if aboutFilter}}{{aboutFilter}}{{else}}<em>(none selected)</em>{{/if}}</div>
     </div>
     <div class="well well-small results">
       <p class="no-results">There were no results from the current search.</p>
