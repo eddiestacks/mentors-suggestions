@@ -61,6 +61,15 @@
           }
       },
 
+      'keydown .searchBox': function(e){
+        if (e.keyCode === 08) {
+          if (this.$('.searchBox input').val().length < 1){
+            this.$('.searchBox li:last').prev().remove();
+            this.manualSearch();
+          }
+        }
+      },
+
       'keyup .searchBox': function(e){
         if (e.keyCode === 32) {
           var enteredText = this.$('.manualEntry').val();
@@ -68,10 +77,6 @@
           this.manualSearch();
           this.$('.searchBox').append("<li><input type='text' class='highlightable manualEntry'></li>");
           this.$('.manualEntry').focus();
-        }
-        else if (e.keyCode === 08) {
-          this.$('.searchBox li:last').prev().remove();
-          this.manualSearch();
         }
       },
 
