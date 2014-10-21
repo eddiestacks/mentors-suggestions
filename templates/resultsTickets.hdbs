@@ -3,11 +3,14 @@
         <div class="filter-list"><strong>Filter:</strong> {{#if aboutFilter}}{{aboutFilter}}{{else}}<em>(none selected)</em>{{/if}}</div>
     </div>
     <div class="well well-small results">
-      <p class="no-results">There were no results from the current search.</p>
-      <ul class="results">
-      {{#each resultList}}
-          <li class="truncate"><a href={{this.link}}>{{this.title}}</a></li>
-      {{/each}}
-      </ul>
+      {{#if resultList}}
+        <ul class="results">
+        {{#each resultList}}
+            <li class="truncate"><a href={{this.link}}>{{this.title}}</a></li>
+        {{/each}}
+        </ul>
+      {{else}}
+        <p>There were no results from the current search.</p>
+      {{/if}}
     </div>
 </div>
