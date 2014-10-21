@@ -158,7 +158,7 @@
       this.switchTo('loading');
       var lexerKeywords = Lexer.extractKeywords(4, this);
       var currentTerms = this.$('.searchBox li');
-        var that = this;
+      var that = this;
 
       // Render search term cloud
       if(currentTerms.length === 0) {
@@ -182,9 +182,11 @@
       }
 
     },
+
     ticketMode: function() {
       return this.$('.btn-ticketSuggestions').hasClass('active') === true;
     },
+
     displayResults: function(data) {
       if (this.ticketMode()) {
         var resultList = [],
