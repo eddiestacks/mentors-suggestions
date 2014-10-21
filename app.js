@@ -69,6 +69,10 @@
           this.$('.searchBox').append("<li><input type='text' class='highlightable manualEntry'></li>");
           this.$('.manualEntry').focus();
         }
+        else if (e.keyCode === 08) {
+          this.$('.searchBox li:last').prev().remove();
+          this.manualSearch();
+        }
       },
 
       // Answer suggestion app DOM Events
