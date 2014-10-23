@@ -23,8 +23,8 @@
       'ticket.custom_field_{{About Field ID}}.changed': _.debounce(function() {
         this.aboutFieldContents = this.ticket().customField(this.aboutFieldID);
         if (this.ticketMode()) {
-          this.search()
-        };
+          this.search();
+        }
       }, 500), // Rerun the search if the About field changes
 
       // AJAX EVENTS
@@ -42,14 +42,14 @@
         if (this.$('.btn-ticketSuggestions').hasClass('active') !== true) {
           this.$('.app-btn').toggleClass('active');
           this.switchTo(this.defaultState);
-          this.search();
+          this.manualSearch();
         }
       },
       'click .btn-answerSuggestions': function() {
         if (this.$('.btn-answerSuggestions').hasClass('active') !== true) {
           this.$('.app-btn').toggleClass('active');
           this.switchTo(this.defaultState);
-          this.initialize();
+          this.manualSearch();
         }
       },
 
