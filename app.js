@@ -1,7 +1,6 @@
 (function() {
 
   var Lexer = require('lexer.js');
-  var Arrive = require('arrive.js');
 
   return {
 
