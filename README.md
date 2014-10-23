@@ -16,7 +16,7 @@ It will also use the same search keywords to display a list of related articles 
 * Add/Remove Search Keywords
 * Ability to filter results using a Custom Dropdown Field (E.g, About Field, Topic, Product Area, etc.)
 
-Please submit bug reports to [Insert Link](). Pull requests are welcome.
+Please submit bug reports to [Insert Link](https://github.com/epritchard/ticket-suggestion/issues). Pull requests are welcome.
 
 ### Screenshot(s):
 [put your screenshots down here.]
