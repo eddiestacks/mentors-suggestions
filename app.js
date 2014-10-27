@@ -9,7 +9,7 @@
 
     // SET APP DEFAULTS
     defaultState: 'loading',
-    defaultNumberOfEntriesToDisplay: 5,
+    defaultNumberOfEntriesToDisplay: 10,
 
     events: {
       // APP EVENTS
@@ -150,6 +150,9 @@
         this.aboutFieldID = this.setting('about_field_id');
         this.aboutFieldContents = (this.aboutFieldID != '0' ? this.ticket().customField('custom_field_' + this.aboutFieldID) : '');
 
+        // Set the limit on the number of results to display
+        this.resultLimit = this.setting('nb_entries') || this.defaultNumberOfEntriesToDisplay;
+
         return this.search();
 
       } else {
@@ -201,12 +204,12 @@
     displayResults: function(data) {
       if (this.ticketMode()) {
         var resultList = [],
-          resCount = data.count,
-          resTicketID,
-          resTicketSubject;
+            resCount = data.count,
+            resTicketID,
+            resTicketSubject;
 
         // Loop through results and prep them for display
-        for (var resultIndex = 0; resultIndex < this.defaultNumberOfEntriesToDisplay && resultIndex < resCount; resultIndex++) {
+        for (var resultIndex = 0; resultIndex <= this.resultLimit && resultIndex < resCount; resultIndex++) {
 
           // Set result Ticket ID to resTicketID, and result Ticket Subject to resTicketSubject
           resTicketID = data.results[resultIndex].id;
