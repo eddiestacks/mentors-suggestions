@@ -240,12 +240,11 @@
 
       if(manualSearchTerms.length > 0) {
         this.search(manualSearchTerms);
-        console.log(manualSearchTerms);
       }
     },
 
     displayError: function(data) {
-      console.log("there was an error");
+      console.log("There was an error:");
       console.log(data);
     },
 
