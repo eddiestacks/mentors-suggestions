@@ -10,13 +10,23 @@
       "title": "app name"
     },
     "parameters": {
+      "about_field_id": {
+        "label": {
+          "title": "About field ID",
+          "value": "About field ID (used for filtering results)"
+        },
+        "helpText": {
+          "title": "Help text for the About field ID",
+          "value": "Enter field ID or leave at 0 if no field is available."
+        }
+      },
       "nb_entries": {
         "label": {
           "title": "Number of results",
           "value": "Number of results."
         },
         "helpText": {
-          "title": "Help text for the number of result field",
+          "title": "Help text for the number of results field",
           "value": "Number of results to display (default: 10, max: 100)."
         }
       },

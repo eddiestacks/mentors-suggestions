@@ -19,8 +19,8 @@
         this.initialize();
       }, 500), // Rerun the search if the subject changes
 
-      'ticket.custom_field_{{About Field ID}}.changed': _.debounce(function() {
-        this.aboutFieldContents = this.ticket().customField(this.aboutFieldID);
+      'ticket.custom_field_{{about_field_id}}.changed': _.debounce(function() {
+        this.aboutFieldContents = this.ticket().customField('custom_field_' + this.aboutFieldID);
         if (this.ticketMode()) {
           this.search();
         }
@@ -146,19 +146,24 @@
 
     initialize: function() {
       if (this.ticketMode()) {
-        // Get the ID for the About Field, store its contents, and declare necessary variables)
-        this.aboutFieldID = 'custom_field_' + this.setting('About Field ID'); this.aboutFieldContents = this.ticket().customField(this.aboutFieldID);
+        // Get the ID for the About Field, store its contents, and declare necessary variables
+        this.aboutFieldID = this.setting('about_field_id');
+        this.aboutFieldContents = (this.aboutFieldID != '0' ? this.ticket().customField('custom_field_' + this.aboutFieldID) : '');
+
         return this.search();
+
       } else {
+
         this.ajax('settings').then(function() {
           this.search();
         }.bind(this));
+
       }
     },
 
 
     search: function(query) {
-      this.switchTo('loading');
+      this.switchTo(this.defaultState);
       var lexerKeywords = Lexer.extractKeywords(4, this);
       var currentTerms = this.$('.searchBox li');
 

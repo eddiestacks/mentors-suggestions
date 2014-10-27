@@ -12,8 +12,9 @@
   "frameworkVersion": "1.0",
   "parameters": [
     {
-      "name": "About Field ID",
-      "type": "number"
+      "name": "about_field_id",
+      "type": "number",
+      "default": "0"
     },
     {
       "name": "nb_entries",
