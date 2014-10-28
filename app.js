@@ -183,7 +183,8 @@
       }
 
 
-      var search_query = query || Lexer.extractKeywords(4, this).join(' ');
+      // Check if query exists, if it does, join its keys with a space; otherwise run Lexer to extract keywords
+      var search_query = (query ? query.join(' ') : query) || Lexer.extractKeywords(4, this).join(' ');
 
       if (this.$('.btn-ticketSuggestions').hasClass('active')) {
         this.ajax('runTicketSearch', search_query, this.aboutFieldContents);
