@@ -79,6 +79,10 @@
         }
       },
 
+      'mouseover .ticket-result': function(e) {
+        this.$(e.target).popover('show');
+      },
+
       // Answer suggestion app DOM Events
       'click a.preview_link': 'previewLink',
       'dragend,click a.copy_link': 'copyLink',
@@ -145,6 +149,7 @@
     },
 
     initialize: function() {
+      this.$('.ticket-result').popover('show');
       if (this.ticketMode()) {
         // Get the ID for the About Field, store its contents, and declare necessary variables
         this.aboutFieldID = this.setting('about_field_id');
@@ -215,12 +220,14 @@
           // Set result Ticket ID to resTicketID, and result Ticket Subject to resTicketSubject
           resTicketID = data.results[resultIndex].id;
           resTicketSubject = data.results[resultIndex].subject;
+          resTicketDescription = data.results[resultIndex].description;
 
           // Test if result is not current ticket being viewed, and if not, add it to resultList array
           if (this.ticket().id() != data.results[resultIndex].id) {
             resultList.push({
               'title': resTicketSubject,
-              'link': '/agent/#/tickets/' + resTicketID
+              'link': '/agent/#/tickets/' + resTicketID,
+              'description': resTicketDescription
             });
           }
         }
