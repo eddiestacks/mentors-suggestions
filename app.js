@@ -212,7 +212,10 @@
         var resultList = [],
             resCount = data.count,
             resTicketID,
-            resTicketSubject;
+            resTicketSubject,
+            resTicketDescription,
+            resTicketType,
+            resTicketLabel;
 
         // Loop through results and prep them for display
         for (var resultIndex = 0; resultIndex <= this.resultLimit && resultIndex < resCount; resultIndex++) {
@@ -221,13 +224,28 @@
           resTicketID = data.results[resultIndex].id;
           resTicketSubject = data.results[resultIndex].subject;
           resTicketDescription = data.results[resultIndex].description;
+          resTicketType = (data.results[resultIndex].type != null ? data.results[resultIndex].type.charAt(0).toUpperCase() : 'N');
+
+          if (resTicketType === 'Q') {
+            resTicketLabel = "badge-info";
+          } else if (resTicketType === 'P') {
+            resTicketLabel = "badge-important";
+          } else if (resTicketType === 'I') {
+            resTicketLabel = "badge-warning";
+          } else if (resTicketType === 'T') {
+            resTicketLabel = "badge-inverse";
+          } else {
+            resTicketLabel = "";
+          }
 
           // Test if result is not current ticket being viewed, and if not, add it to resultList array
           if (this.ticket().id() != data.results[resultIndex].id) {
             resultList.push({
               'title': resTicketSubject,
               'link': '/agent/#/tickets/' + resTicketID,
-              'description': resTicketDescription
+              'description': resTicketDescription,
+              'type': resTicketType,
+              'label-type': resTicketLabel
             });
           }
         }

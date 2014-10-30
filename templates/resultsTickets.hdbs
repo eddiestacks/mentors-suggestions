@@ -6,7 +6,7 @@
       {{#if resultList}}
         <ul class="results">
         {{#each resultList}}
-            <li class="truncate"><a class="ticket-result" data-content="{{this.description}}" data-trigger="hover" data-placement="left" data-title="{{this.title}}" href={{this.link}}>{{this.title}}</a></li>
+            <li><a class="ticket-result truncate" data-content="{{this.description}}" data-trigger="hover" data-placement="left" data-title="{{this.title}}" href={{this.link}}>{{this.title}}</a><span class="badge {{this.label-type}}">{{this.type}}</span></li>
         {{/each}}
         </ul>
       {{else}}
