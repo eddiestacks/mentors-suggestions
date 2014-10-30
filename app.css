@@ -48,17 +48,21 @@
     background: #ededed;
 }
 
-.results i {
-    position: relative;
-    top: 3px;
-    cursor: pointer;
+.results span.badge {
+    float: right;
+    margin-top: 5px;
+    width: 8px;
+    text-align: center;
 }
 
 .truncate {
-    width: 290px;
+    width: 264px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: inline-block;
+    position: relative;
+    bottom: -3px;
 }
 
 .no-results {

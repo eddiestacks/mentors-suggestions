@@ -79,6 +79,10 @@
         }
       },
 
+      'mouseover .ticket-result': function(e) {
+        this.$(e.target).popover('show');
+      },
+
       // Answer suggestion app DOM Events
       'click a.preview_link': 'previewLink',
       'dragend,click a.copy_link': 'copyLink',
@@ -145,6 +149,7 @@
     },
 
     initialize: function() {
+      this.$('.ticket-result').popover('show');
       if (this.ticketMode()) {
         // Get the ID for the About Field, store its contents, and declare necessary variables
         this.aboutFieldID = this.setting('about_field_id');
@@ -207,7 +212,11 @@
         var resultList = [],
             resCount = data.count,
             resTicketID,
-            resTicketSubject;
+            resTicketSubject,
+            resTicketDescription,
+            resTicketType,
+            resTicketLabel,
+            resTicketCreation;
 
         // Loop through results and prep them for display
         for (var resultIndex = 0; resultIndex <= this.resultLimit && resultIndex < resCount; resultIndex++) {
@@ -215,12 +224,31 @@
           // Set result Ticket ID to resTicketID, and result Ticket Subject to resTicketSubject
           resTicketID = data.results[resultIndex].id;
           resTicketSubject = data.results[resultIndex].subject;
+          resTicketDescription = data.results[resultIndex].description.substring(0,500) + "...";
+          resTicketType = (data.results[resultIndex].type !== null ? data.results[resultIndex].type.charAt(0).toUpperCase() : 'N');
+          resTicketCreation = data.results[resultIndex].created_at;
+
+          if (resTicketType === 'Q') {
+            resTicketLabel = "badge-info";
+          } else if (resTicketType === 'P') {
+            resTicketLabel = "badge-important";
+          } else if (resTicketType === 'I') {
+            resTicketLabel = "badge-warning";
+          } else if (resTicketType === 'T') {
+            resTicketLabel = "badge-inverse";
+          } else {
+            resTicketLabel = "";
+          }
 
           // Test if result is not current ticket being viewed, and if not, add it to resultList array
           if (this.ticket().id() != data.results[resultIndex].id) {
             resultList.push({
               'title': resTicketSubject,
-              'link': '/agent/#/tickets/' + resTicketID
+              'link': '/agent/#/tickets/' + resTicketID,
+              'description': resTicketDescription,
+              'type': resTicketType,
+              'label-type': resTicketLabel,
+              'creation': resTicketCreation
             });
           }
         }
