@@ -215,7 +215,8 @@
             resTicketSubject,
             resTicketDescription,
             resTicketType,
-            resTicketLabel;
+            resTicketLabel,
+            resTicketCreation;
 
         // Loop through results and prep them for display
         for (var resultIndex = 0; resultIndex <= this.resultLimit && resultIndex < resCount; resultIndex++) {
@@ -223,8 +224,9 @@
           // Set result Ticket ID to resTicketID, and result Ticket Subject to resTicketSubject
           resTicketID = data.results[resultIndex].id;
           resTicketSubject = data.results[resultIndex].subject;
-          resTicketDescription = data.results[resultIndex].description;
-          resTicketType = (data.results[resultIndex].type != null ? data.results[resultIndex].type.charAt(0).toUpperCase() : 'N');
+          resTicketDescription = data.results[resultIndex].description.substring(0,500) + "...";
+          resTicketType = (data.results[resultIndex].type !== null ? data.results[resultIndex].type.charAt(0).toUpperCase() : 'N');
+          resTicketCreation = data.results[resultIndex].created_at;
 
           if (resTicketType === 'Q') {
             resTicketLabel = "badge-info";
@@ -245,7 +247,8 @@
               'link': '/agent/#/tickets/' + resTicketID,
               'description': resTicketDescription,
               'type': resTicketType,
-              'label-type': resTicketLabel
+              'label-type': resTicketLabel,
+              'creation': resTicketCreation
             });
           }
         }

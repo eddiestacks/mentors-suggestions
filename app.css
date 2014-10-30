@@ -51,6 +51,8 @@
 .results span.badge {
     float: right;
     margin-top: 5px;
+    width: 8px;
+    text-align: center;
 }
 
 .truncate {
